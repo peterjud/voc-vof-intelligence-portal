@@ -82,11 +82,11 @@ var BASELINE = D.signals.filter(function(s){return !s.commentary;}).length;
 function mode(arr){var m={},best="—",bc=0;arr.forEach(function(x){if(!x)return;m[x]=(m[x]||0)+1;if(m[x]>bc){bc=m[x];best=x;}});return {key:best,count:bc};}
 // Top 100 / Customer lanes: deck-accurate program metrics (SLRN-425)
 var KPIS_TOP100=[
- {sentiment:"neutral",seg:"Top 100 · Gong",label:"Calls analyzed",value:"1,243",sub:"60 of 77 T100 firms · rolling 12 mo"},
- {sentiment:"amber",seg:"Top 100 · churn",label:"Calls with a churn signal",value:"212",sub:"base for the churn-driver mix"},
- {sentiment:"red",seg:"#1 churn driver",label:"Escalations stall deals",value:"33%",sub:"60 calls · % of churn-signal calls"},
- {sentiment:"red",seg:"#2 churn driver",label:"Capability gaps at demo",value:"28%",sub:"52 calls · % of churn-signal calls"},
- {sentiment:"amber",seg:"#3 churn driver",label:"Pricing — structure",value:"21%",sub:"39 calls · % of churn-signal calls"}
+ {sentiment:"neutral",seg:"Top 100 · Gong",label:"Calls analyzed",value:"1,243",sub:"60 of 77 T100 firms · V1 directional read"},
+ {sentiment:"amber",seg:"Top 100 · losses",label:"3 execution gaps",value:"82%",sub:"of churn-signal calls"},
+ {sentiment:"red",seg:"#1 gap",label:"Escalations stall deals",value:"33%",sub:"60 calls · % of churn-signal calls"},
+ {sentiment:"red",seg:"#2 gap",label:"Capability gaps at demo",value:"28%",sub:"52 calls · % of churn-signal calls"},
+ {sentiment:"amber",seg:"#3 gap",label:"Pricing — structure",value:"21%",sub:"39 calls · % of churn-signal calls"}
 ];
 function kpiTile(k){return '<div class="kpi '+k.sentiment+'"><div class="seg">'+esc(k.seg)+'</div><div class="lab">'+esc(k.label)+'</div><div class="v num">'+esc(k.value)+'</div><div class="sub">'+esc(k.sub)+'</div></div>';}
 function renderKPIs(F){
@@ -239,6 +239,8 @@ function renderInsightTable(sel, cfg){
     var detail='<tr class="fdetail" id="'+did+'"><td colspan="6"><div class="fdetail-in">'+
       (bullets?'<span class="lab">Why it matters</span><ul class="fbullets">'+bullets+'</ul>':'')+
       (r.verbatim?'<span class="lab">What they said</span><blockquote>“'+esc(r.verbatim)+'”</blockquote><span class="who">'+esc(r.who||"")+'</span>':'')+
+      (r.keyfirms?'<div class="kvline"><span class="lab">Key firms</span> '+esc(r.keyfirms)+'</div>':'')+
+      (r.aisignal?'<div class="kvline"><span class="lab">AI signal</span> '+esc(r.aisignal)+'</div>':'')+
       '</div></td></tr>';
     return '<tr class="frow" data-d="'+did+'" tabindex="0" role="button">'+
       '<td><span class="frk">'+r.rank+'</span></td>'+
@@ -249,7 +251,8 @@ function renderInsightTable(sel, cfg){
       '<td class="ffirms num">'+esc(r.metric||"")+'</td></tr>'+detail;
   }).join("");
   $(sel).innerHTML='<div class="chart-head"><div><h2 class="h">'+esc(cfg.title)+'</h2><p class="h-sub">'+esc(cfg.sub)+'</p></div></div>'+
-    '<div class="tablewrap"><table class="ftable"><thead><tr><th>#</th><th>'+esc(cfg.col1||"Theme")+'</th><th>Product</th><th>'+esc(cfg.col3||"Stage")+'</th><th>Signal strength</th><th class="num">'+esc(cfg.col5||"Reach")+'</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+    '<div class="tablewrap"><table class="ftable"><thead><tr><th>#</th><th>'+esc(cfg.col1||"Theme")+'</th><th>Product</th><th>'+esc(cfg.col3||"Stage")+'</th><th>Signal strength</th><th class="num">'+esc(cfg.col5||"Reach")+'</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    (cfg.caveat?'<div class="fnote">'+esc(cfg.caveat)+'</div>':'');
   Array.prototype.slice.call($(sel).querySelectorAll(".frow")).forEach(function(tr){
     function toggle(){var d=document.getElementById(tr.dataset.d);if(d){tr.classList.toggle("open",d.classList.toggle("show"));}}
     tr.addEventListener("click",toggle);
