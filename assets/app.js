@@ -62,10 +62,10 @@ function mode(arr){var m={},best="—",bc=0;arr.forEach(function(x){if(!x)return
 // Top 100 / Customer lanes: deck-accurate program metrics (SLRN-425)
 var KPIS_TOP100=[
  {sentiment:"neutral",seg:"Top 100 · Gong",label:"Calls analyzed",value:"1,243",sub:"60 of 77 T100 firms · rolling 12 mo"},
- {sentiment:"amber",seg:"Top 100 · churn",label:"Calls with a churn signal",value:"212",sub:"the base for the churn mix below"},
- {sentiment:"red",seg:"#1 churn driver",label:"Escalations stall deals",value:"33%",sub:"60 calls · issues recur call-to-call"},
- {sentiment:"red",seg:"#2 churn driver",label:"Capability gaps at demo",value:"28%",sub:"52 calls · demo reveals the gap"},
- {sentiment:"amber",seg:"#3 churn driver",label:"Pricing — structure",value:"21%",sub:"39 calls · can't commit / pass through"}
+ {sentiment:"red",seg:"#1 churn driver",label:"High-priority escalations",value:"5.0%",sub:"62 calls · % of 1,243"},
+ {sentiment:"red",seg:"#2 churn driver",label:"Capability gaps",value:"4.4%",sub:"55 calls · % of 1,243"},
+ {sentiment:"amber",seg:"#3 churn driver",label:"Pricing & billing",value:"3.9%",sub:"49 calls · % of 1,243"},
+ {sentiment:"neutral",seg:"Top capability ask",label:"Multi-entity consolidation",value:"24.1%",sub:"299 calls · % of 1,243"}
 ];
 function kpiTile(k){return '<div class="kpi '+k.sentiment+'"><div class="seg">'+esc(k.seg)+'</div><div class="lab">'+esc(k.label)+'</div><div class="v num">'+esc(k.value)+'</div><div class="sub">'+esc(k.sub)+'</div></div>';}
 function renderKPIs(F){
