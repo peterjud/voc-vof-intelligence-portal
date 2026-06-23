@@ -187,6 +187,18 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .sigbadge.critical{background:var(--brand-deep);color:#fff;}
 .sigbadge.high{background:var(--brand);color:#fff;}
 .sigbadge.medium{background:var(--brand-tint);color:var(--brand-ink);}
+.sigbadge.watch{background:var(--neutral-bg);color:var(--neutral);}
+/* firm watchlist */
+.fwtoggles{display:flex;gap:6px;}
+.fwtog{appearance:none;border:1px solid var(--line-strong);background:var(--surface);border-radius:7px;padding:4px 11px;font-size:.74rem;font-weight:700;cursor:pointer;color:var(--ink-soft);}
+.fwtog.on{background:var(--brand-deep);border-color:var(--brand-deep);color:#fff;}
+.fwsent{display:flex;height:10px;border-radius:6px;overflow:hidden;border:1px solid var(--line);margin:12px 0 5px;}
+.fwseg{display:block;height:100%;}
+.fwsl{font-size:.72rem;color:var(--muted);}
+.fwcov{font-size:.74rem;color:var(--ink-soft);background:var(--surface-2);border-radius:7px;padding:6px 11px;margin:10px 0;}
+.fwfirm{font-weight:700;font-size:.88rem;color:var(--ink);}
+.fwsub{font-size:.7rem;color:var(--muted);margin-top:1px;}
+.fwissue{font-weight:600;color:var(--ink);font-size:.84rem;}
 .fmeter{display:inline-flex;gap:3px;}
 .fmeter i{width:7px;height:16px;border-radius:2px;background:var(--line-strong);}
 .fmeter.critical i.on{background:var(--brand-deep);}

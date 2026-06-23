@@ -18,6 +18,7 @@ var SENT_ORDER = {red:0,amber:1,green:2,neutral:3};
 
 var state = {lane:"all", segment:"", product:"", source:"", theme:"", sentiment:"", q:""};
 var frictionFilter = {critical:true, high:true, medium:true};
+var firmFilter = "all";
 
 /* ---------- header ---------- */
 $("#updated").textContent = "Updated "+fmtDate(D.meta.updated);
@@ -173,6 +174,36 @@ function renderTrendingTwo(){
     }).join("");
     return '<div class="card"><h2 class="h" style="font-size:.95rem">'+esc(g.title)+'</h2><p class="h-sub">'+esc(g.sub)+'</p><div style="margin-top:8px">'+rows+'</div></div>';
   }).join("");
+}
+
+/* ---------- Top 100 firm watchlist ---------- */
+function renderFirmWatch(){
+  var W=D.firmWatch; if(!W){return;}
+  var SIG={critical:"Critical",high:"High",medium:"Medium",watch:"Watch"};
+  var rows=W.rows.filter(function(r){return firmFilter==="all"||r.signal==="critical"||r.signal==="high";});
+  var body=rows.map(function(r){
+    var bits=[]; if(r.tier&&r.tier!=="—")bits.push(r.tier); if(r.calls&&r.calls!=="—")bits.push(r.calls+" calls");
+    var sub=bits.join(" · ")||"Gong-covered";
+    var sent=r.sentiment==="positive"?"green":r.sentiment==="negative"?"red":"neutral";
+    return '<tr><td><div class="fwfirm">'+esc(r.firm)+'</div><div class="fwsub">'+esc(sub)+'</div></td>'+
+      '<td><span class="sigbadge '+r.signal+'">'+SIG[r.signal]+'</span></td>'+
+      '<td class="fcat">Gong · call</td>'+
+      '<td class="fwissue">'+esc(r.issue)+'</td>'+
+      '<td><span class="tag '+sent+'">'+esc(r.sentiment)+'</span></td></tr>';
+  }).join("");
+  var s=W.sentiment;
+  var bar='<div class="fwsent"><span class="fwseg" style="width:'+s.pos+'%;background:var(--green)" title="Positive '+s.pos+'%"></span>'+
+    '<span class="fwseg" style="width:'+s.neg+'%;background:var(--red)" title="Negative '+s.neg+'%"></span>'+
+    '<span class="fwseg" style="width:'+s.neu+'%;background:var(--neutral)" title="Neutral '+s.neu+'%"></span></div>'+
+    '<div class="fwsl">'+s.pos+'% positive · '+s.neg+'% negative · '+s.neu+'% neutral (Gong-tagged calls)</div>';
+  $("#firmWatch").innerHTML=
+   '<div class="chart-head"><div><h2 class="h">'+esc(W.title)+'</h2><p class="h-sub">'+esc(W.sub)+'</p></div>'+
+   '<div class="fwtoggles"><button class="fwtog'+(firmFilter==="all"?" on":"")+'" data-ff="all">All firms</button>'+
+   '<button class="fwtog'+(firmFilter==="high"?" on":"")+'" data-ff="high">High signal</button></div></div>'+
+   bar+'<div class="fwcov">'+esc(W.coverage)+'</div>'+
+   '<div class="tablewrap"><table class="ftable"><thead><tr><th>Firm</th><th>Signal</th><th>Source</th><th>Top issue</th><th>Sentiment</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
+   '<div class="fnote">'+esc(W.caveat)+'</div>';
+  Array.prototype.slice.call(document.querySelectorAll("#firmWatch [data-ff]")).forEach(function(b){b.addEventListener("click",function(){firmFilter=b.dataset.ff;renderFirmWatch();});});
 }
 
 /* reusable rich expandable insight table (friction-table styling) */
@@ -354,7 +385,7 @@ function render(){
   Array.prototype.slice.call(document.querySelectorAll(".srcsec")).forEach(function(el){el.classList.toggle("hidden", !(state.source===""||state.source===el.dataset.src));});
   var filtered = D.signals.filter(matches);
   renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
-  renderInsightTable("#churnTable",D.top100churn);renderInsightTable("#eceTable",D.eceThemes);
+  renderFirmWatch();renderInsightTable("#churnTable",D.top100churn);renderInsightTable("#eceTable",D.eceThemes);
   renderTrendingTwo();renderCoverage();renderFriction();
   renderWordcloud(filtered);
   renderSummary(filtered);
