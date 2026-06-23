@@ -65,6 +65,18 @@ Array.prototype.slice.call(document.querySelectorAll(".tab")).forEach(function(t
 });
 window.addEventListener("hashchange",function(){selectLane((location.hash||"").replace("#",""));render();});
 
+/* ---------- Scorecard (program rollup) ---------- */
+function renderScorecard(){
+  var S=D.scorecard; if(!S){return;}
+  $("#scorecard").innerHTML=S.tiles.map(function(t){
+    return '<div class="sctile '+t.s+'">'+
+      '<div class="sctop"><span class="scdomain">'+esc(t.domain)+'</span><span class="scstatus '+t.s+'">'+esc(t.status)+'</span></div>'+
+      '<div class="scmetric num">'+esc(t.metric)+(t.unit?' <small>'+esc(t.unit)+'</small>':'')+'</div>'+
+      '<div class="sclabel">'+esc(t.label)+'</div>'+
+      '<div class="scsub">'+esc(t.sub)+'</div></div>';
+  }).join("");
+}
+
 /* ---------- KPI ---------- */
 var BASELINE = D.signals.filter(function(s){return !s.commentary;}).length;
 function mode(arr){var m={},best="—",bc=0;arr.forEach(function(x){if(!x)return;m[x]=(m[x]||0)+1;if(m[x]>bc){bc=m[x];best=x;}});return {key:best,count:bc};}
@@ -383,8 +395,9 @@ function render(){
   Array.prototype.slice.call(document.querySelectorAll(".customeronly")).forEach(function(el){el.classList.toggle("hidden",hideCustomer);});
   // source filter reshapes the field panels: TIM section shows for TIM, Heartbeat section for Heartbeat
   Array.prototype.slice.call(document.querySelectorAll(".srcsec")).forEach(function(el){el.classList.toggle("hidden", !(state.source===""||state.source===el.dataset.src));});
+  $("#scorecardSec").classList.toggle("hidden", state.lane!=="all"); // program rollup only on the All view
   var filtered = D.signals.filter(matches);
-  renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
+  renderScorecard();renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
   renderFirmWatch();renderInsightTable("#churnTable",D.top100churn);renderInsightTable("#eceTable",D.eceThemes);
   renderTrendingTwo();renderCoverage();renderFriction();
   renderWordcloud(filtered);

@@ -80,6 +80,20 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .topfix{font-size:.8rem;color:var(--ink);background:var(--green-bg);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:9px 13px;margin:11px 0 0;line-height:1.45;}
 .caveat{font-size:.72rem;color:var(--muted);font-style:italic;margin:9px 0 0;}
 
+/* ---------- Scorecard (program rollup) ---------- */
+.scorecard{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+@media(max-width:1080px){.scorecard{grid-template-columns:repeat(2,1fr);}}
+.sctile{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--neutral);border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:15px 16px;}
+.sctile.red{border-left-color:var(--red);}.sctile.amber{border-left-color:var(--amber);}.sctile.green{border-left-color:var(--green);}
+.sctop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+.scdomain{font-size:.78rem;font-weight:700;color:var(--ink-soft);}
+.scstatus{font-size:.64rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:3px 8px;white-space:nowrap;}
+.scstatus.red{background:var(--red-bg);color:var(--red);}.scstatus.amber{background:var(--amber-bg);color:var(--amber);}.scstatus.green{background:var(--green-bg);color:var(--green);}
+.scmetric{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--ink);}
+.scmetric small{font-size:.85rem;font-weight:600;color:var(--muted);}
+.sclabel{font-size:.74rem;color:var(--ink-soft);font-weight:600;margin-top:3px;}
+.scsub{font-size:.72rem;color:var(--muted);margin-top:8px;line-height:1.45;}
+
 /* ---------- KPI strip ---------- */
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
 @media(max-width:1080px){.kpis{grid-template-columns:repeat(2,1fr);}}
