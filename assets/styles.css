@@ -199,6 +199,8 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .fdetail-in .lab{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
 .fdetail-in blockquote{margin:5px 0;font-size:.88rem;color:var(--ink);font-style:italic;}
 .fdetail-in .who{font-size:.76rem;color:var(--ink-soft);font-weight:600;}
+.fbullets{margin:4px 0 12px;padding-left:18px;}
+.fbullets li{font-size:.84rem;color:var(--ink);line-height:1.45;margin:4px 0;}
 
 /* coverage */
 .covtable{width:100%;border-collapse:collapse;font-size:.84rem;}

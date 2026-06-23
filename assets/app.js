@@ -162,8 +162,9 @@ function renderMix(){
 }
 
 /* ---------- trending ---------- */
-function renderTrending(){
-  $("#trending").innerHTML=D.trending.map(function(g){
+function renderTrendingTwo(){
+  var groups=D.trending.slice(1); // churn is now a rich table; show capability + migration here
+  $("#trendingTwo").innerHTML=groups.map(function(g){
     var max=Math.max.apply(null,g.rows.map(function(r){return r.v;}));
     var rows=g.rows.map(function(r,i){
       return '<div class="trank"><div class="rk">'+(i+1)+'</div><div class="tt">'+esc(r.t)+'</div>'+
@@ -172,6 +173,35 @@ function renderTrending(){
     }).join("");
     return '<div class="card"><h2 class="h" style="font-size:.95rem">'+esc(g.title)+'</h2><p class="h-sub">'+esc(g.sub)+'</p><div style="margin-top:8px">'+rows+'</div></div>';
   }).join("");
+}
+
+/* reusable rich expandable insight table (friction-table styling) */
+function renderInsightTable(sel, cfg){
+  if(!cfg){return;}
+  var key=sel.replace("#",""), SIG={critical:"Critical",high:"High",medium:"Medium"}, BARS={critical:3,high:2,medium:1};
+  var rows=cfg.rows.map(function(r){
+    var meter='<span class="fmeter '+r.signal+'">'+[0,1,2].map(function(i){return '<i class="'+(i<BARS[r.signal]?"on":"")+'"></i>';}).join("")+'</span>';
+    var bullets=(r.bullets||[]).map(function(b){return '<li>'+esc(b)+'</li>';}).join("");
+    var did=key+"-d-"+r.rank;
+    var detail='<tr class="fdetail" id="'+did+'"><td colspan="6"><div class="fdetail-in">'+
+      (bullets?'<span class="lab">Why it matters</span><ul class="fbullets">'+bullets+'</ul>':'')+
+      (r.verbatim?'<span class="lab">What they said</span><blockquote>“'+esc(r.verbatim)+'”</blockquote><span class="who">'+esc(r.who||"")+'</span>':'')+
+      '</div></td></tr>';
+    return '<tr class="frow" data-d="'+did+'" tabindex="0" role="button">'+
+      '<td><span class="frk">'+r.rank+'</span></td>'+
+      '<td class="ftheme">'+esc(r.title)+' <span class="chev">›</span></td>'+
+      '<td class="fprod">'+esc(r.product||"")+'</td>'+
+      '<td class="fcat">'+esc(r.stage||"")+'</td>'+
+      '<td><span class="sigwrap"><span class="sigbadge '+r.signal+'">'+SIG[r.signal]+'</span>'+meter+'</span></td>'+
+      '<td class="ffirms num">'+esc(r.metric||"")+'</td></tr>'+detail;
+  }).join("");
+  $(sel).innerHTML='<div class="chart-head"><div><h2 class="h">'+esc(cfg.title)+'</h2><p class="h-sub">'+esc(cfg.sub)+'</p></div></div>'+
+    '<div class="tablewrap"><table class="ftable"><thead><tr><th>#</th><th>'+esc(cfg.col1||"Theme")+'</th><th>Product</th><th>'+esc(cfg.col3||"Stage")+'</th><th>Signal strength</th><th class="num">'+esc(cfg.col5||"Reach")+'</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  Array.prototype.slice.call($(sel).querySelectorAll(".frow")).forEach(function(tr){
+    function toggle(){var d=document.getElementById(tr.dataset.d);if(d){tr.classList.toggle("open",d.classList.toggle("show"));}}
+    tr.addEventListener("click",toggle);
+    tr.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+  });
 }
 
 /* ---------- coverage ---------- */
@@ -323,7 +353,9 @@ function render(){
   // source filter reshapes the field panels: TIM section shows for TIM, Heartbeat section for Heartbeat
   Array.prototype.slice.call(document.querySelectorAll(".srcsec")).forEach(function(el){el.classList.toggle("hidden", !(state.source===""||state.source===el.dataset.src));});
   var filtered = D.signals.filter(matches);
-  renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();renderTrending();renderCoverage();renderFriction();
+  renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
+  renderInsightTable("#churnTable",D.top100churn);renderInsightTable("#eceTable",D.eceThemes);
+  renderTrendingTwo();renderCoverage();renderFriction();
   renderWordcloud(filtered);
   renderSummary(filtered);
   renderVerbatims(filtered);
