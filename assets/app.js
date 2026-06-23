@@ -33,9 +33,9 @@ fillSelect("#f-sentiment", [{k:"red",data:1},{k:"amber",data:1},{k:"green",data:
 // relabel sentiment options
 (function(){var s=$("#f-sentiment");var L={red:"Alert (red)",amber:"Caution (amber)",green:"Positive (green)",neutral:"Neutral"};Array.prototype.slice.call(s.options).forEach(function(o){if(L[o.value])o.textContent=L[o.value];});})();
 
-function bind(id,key){$(id).addEventListener("change",function(){state[key]=this.value;render();});}
+function bind(id,key){$(id).addEventListener("change",function(){state[key]=this.value;render();scrollResults();});}
 bind("#f-segment","segment");bind("#f-product","product");bind("#f-theme","theme");bind("#f-sentiment","sentiment");
-$("#f-source").addEventListener("change",function(){state.source=this.value==="Analysis"?"derived/analysis":this.value;render();});
+$("#f-source").addEventListener("change",function(){state.source=this.value==="Analysis"?"derived/analysis":this.value;render();scrollResults();});
 $("#f-search").addEventListener("input",function(){state.q=this.value.trim().toLowerCase();render();});
 $("#reset").addEventListener("click",function(){
   state.segment=state.product=state.source=state.theme=state.sentiment=state.q="";
@@ -111,18 +111,23 @@ function renderTimeseries(){
     svg+'<div class="legend">'+legend+'</div><p class="card-note">'+esc(t.note)+'</p>';
 }
 
-/* ---------- word cloud ---------- */
-function renderWordcloud(){
-  var max=Math.max.apply(null,D.wordcloud.map(function(w){return w[1];}));
-  var min=Math.min.apply(null,D.wordcloud.map(function(w){return w[1];}));
-  var html=D.wordcloud.map(function(w){
-    var sz=(0.85+1.7*(w[1]-min)/(max-min)).toFixed(2);
-    var op=(0.6+0.4*(w[1]-min)/(max-min)).toFixed(2);
-    return '<button data-term="'+esc(w[0])+'" style="font-size:'+sz+'rem;opacity:'+op+'">'+esc(w[0])+'</button>';
+/* ---------- word cloud (reactive to filters) ---------- */
+function renderWordcloud(filtered){
+  var pairs=D.wordcloud.map(function(w){
+    var tl=w[0].toLowerCase();
+    var c=filtered.reduce(function(a,s){return a+(((s.text+" "+s.theme).toLowerCase().indexOf(tl)>=0)?1:0);},0);
+    return [w[0],c];
+  }).filter(function(p){return p[1]>0;}).sort(function(a,b){return b[1]-a[1];});
+  var head='<div class="chart-head"><div><h2 class="h">What\'s driving the volume</h2><p class="h-sub">Term frequency in the filtered signals · click to filter</p></div></div>';
+  if(!pairs.length){$("#wordcloud").innerHTML=head+'<div class="cloud"><span style="color:var(--muted)">No terms in this slice — loosen a filter.</span></div>';return;}
+  var max=pairs[0][1],min=pairs[pairs.length-1][1],span=(max===min)?1:(max-min);
+  var html=pairs.map(function(w){
+    var f=(w[1]-min)/span;
+    return '<button data-term="'+esc(w[0])+'" title="'+w[1]+' signals" style="font-size:'+(0.85+1.7*f).toFixed(2)+'rem;opacity:'+(0.6+0.4*f).toFixed(2)+'">'+esc(w[0])+'</button>';
   }).join("");
-  $("#wordcloud").innerHTML='<div class="chart-head"><div><h2 class="h">What\'s driving the volume</h2><p class="h-sub">Term frequency across all sources · click a term to filter the verbatims</p></div></div><div class="cloud">'+html+'</div>';
+  $("#wordcloud").innerHTML=head+'<div class="cloud">'+html+'</div>';
   Array.prototype.slice.call(document.querySelectorAll(".cloud button")).forEach(function(b){
-    b.addEventListener("click",function(){state.q=b.dataset.term.toLowerCase();$("#f-search").value=b.dataset.term;render();window.scrollTo({top:document.querySelector('[data-lane]')?$("#verbatims").offsetTop-90:0,behavior:"smooth"});});
+    b.addEventListener("click",function(){state.q=b.dataset.term.toLowerCase();$("#f-search").value=b.dataset.term;render();scrollResults();});
   });
 }
 
@@ -183,18 +188,17 @@ function matches(s){
   if(state.q){ if((s.text+" "+s.theme+" "+(s.who||"")).toLowerCase().indexOf(state.q)<0) return false; }
   return true;
 }
-function renderVerbatims(){
+function renderVerbatims(filtered){
   var anyFilter = state.segment||state.product||state.source||state.theme||state.sentiment||state.q||state.lane!=="all";
-  var list = D.signals.filter(matches);
-  // default view: lead with quotes
+  var list = filtered.slice();
+  // lead with quotes, then alerts first
   list.sort(function(a,b){
     var av=a.type==="verbatim"?0:1, bv=b.type==="verbatim"?0:1;
     if(av!==bv) return av-bv;
     return (SENT_ORDER[a.sentiment]-SENT_ORDER[b.sentiment]);
   });
   if(!anyFilter) list = list.filter(function(s){return s.type==="verbatim";});
-  $("#rc").textContent = list.length+" signal"+(list.length===1?"":"s");
-  var CAP=120, shown=list.slice(0,CAP);
+  var CAP = anyFilter?120:14, shown=list.slice(0,CAP);
   if(!shown.length){
     $("#verbatims").innerHTML='<div class="card empty" style="grid-column:1/-1"><h3>No signals match these filters</h3><p>Loosen a filter or clear the search to see more.</p></div>';
     return;
@@ -212,6 +216,37 @@ function renderVerbatims(){
   }).join("") + (list.length>CAP? '<div class="card empty" style="grid-column:1/-1;padding:14px"><p>Showing '+CAP+' of '+list.length+' — narrow with a filter to see the rest.</p></div>':'');
 }
 
+/* ---------- live filter summary ---------- */
+function renderSummary(filtered){
+  var box=$("#filtersummary");
+  var LANELAB={top100:"Top 100 Firms",customer:"Customer",field:"Field"}, SRCL={"derived/analysis":"Analysis"};
+  var chips=[];
+  function chip(label,key){return '<button class="fchip" data-clear="'+key+'">'+esc(label)+' <span>×</span></button>';}
+  if(state.lane!=="all" && LANELAB[state.lane]) chips.push(chip(LANELAB[state.lane],"lane"));
+  if(state.segment) chips.push(chip("Segment · "+state.segment,"segment"));
+  if(state.product) chips.push(chip("Product · "+state.product,"product"));
+  if(state.source) chips.push(chip("Source · "+(SRCL[state.source]||state.source),"source"));
+  if(state.theme) chips.push(chip("Theme · "+state.theme,"theme"));
+  if(state.sentiment) chips.push(chip("Sentiment · "+state.sentiment,"sentiment"));
+  if(state.q) chips.push(chip('Search · "'+state.q+'"',"q"));
+  var c={red:0,amber:0,green:0,neutral:0};
+  filtered.forEach(function(s){c[s.sentiment]=(c[s.sentiment]||0)+1;});
+  var bd='<span class="sb"><i class="dot-red"></i>'+c.red+' alert</span><span class="sb"><i class="dot-amber"></i>'+c.amber+' caution</span><span class="sb"><i class="dot-green"></i>'+c.green+' positive</span>';
+  var html='<div class="inner">';
+  if(chips.length) html+='<div class="chips">'+chips.join("")+'<button class="fchip clear" data-clear="all">Clear all ×</button></div>';
+  html+='<div class="sumcount"><b class="num">'+filtered.length+'</b> matching signal'+(filtered.length===1?'':'s')+' · '+bd+(chips.length?'':' · <span class="hint">pick a filter, search, or click a word below to drill in</span>')+'</div></div>';
+  box.innerHTML=html;
+  Array.prototype.slice.call(box.querySelectorAll("[data-clear]")).forEach(function(b){b.addEventListener("click",function(){clearFilter(b.dataset.clear);});});
+}
+function clearFilter(key){
+  if(key==="all"){state.segment=state.product=state.source=state.theme=state.sentiment=state.q="";["#f-segment","#f-product","#f-source","#f-theme","#f-sentiment"].forEach(function(i){$(i).value="";});$("#f-search").value="";}
+  else if(key==="lane"){selectLane("all");if(location.hash)location.hash="all";}
+  else if(key==="q"){state.q="";$("#f-search").value="";}
+  else {state[key]="";var map={segment:"#f-segment",product:"#f-product",source:"#f-source",theme:"#f-theme",sentiment:"#f-sentiment"};if(map[key]){$(map[key]).value="";}}
+  render();
+}
+function scrollResults(){var v=$("#verbatims");if(!v)return;window.scrollTo({top:v.getBoundingClientRect().top+window.pageYOffset-80,behavior:"smooth"});}
+
 /* ---------- master render ---------- */
 function render(){
   var empty = state.lane==="partners"||state.lane==="investors";
@@ -219,12 +254,17 @@ function render(){
   $("#lane-empty").classList.toggle("hidden",!empty);
   if(empty){
     $("#empty-title").textContent = state.lane==="partners"?"Partner signals":"Investor signals";
+    $("#filtersummary").innerHTML="";
     return;
   }
   // Top 100 and Customer lanes hide field-only (Time-in-Motion) panels to stay on the customer-firm story
   var hideField = (state.lane==="top100"||state.lane==="customer");
   Array.prototype.slice.call(document.querySelectorAll(".fieldonly")).forEach(function(el){el.classList.toggle("hidden",hideField);});
-  renderKPIs();renderTimeseries();renderWordcloud();renderMix();renderTrending();renderCoverage();renderVerbatims();
+  var filtered = D.signals.filter(matches);
+  renderKPIs();renderTimeseries();renderMix();renderTrending();renderCoverage();
+  renderWordcloud(filtered);
+  renderSummary(filtered);
+  renderVerbatims(filtered);
 }
 selectLane((location.hash||"").replace("#",""));
 render();
