@@ -4,6 +4,14 @@ var D = window.VOC_DATA;
 var $ = function(s,r){return (r||document).querySelector(s);};
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
 function fmtDate(iso){var m=["January","February","March","April","May","June","July","August","September","October","November","December"];var p=iso.split("-");return m[+p[1]-1]+" "+(+p[2])+", "+p[0];}
+// Return a clean "n similar" count, or null if the value is a duration/amount/desc (not a similar-count)
+function similarCount(c){
+  if(!c) return null;
+  var s=String(c).trim();
+  if(/[$%]|hour|hr\b|week|wk\b|\bday|month|\bmo\b|\/mo|entit|half|fail|theme|min\b|pts|:|→|\bpt\b/i.test(s)) return null;
+  var m=s.match(/^(\d+)(\+)?/);
+  return m? m[1]+(m[2]||"") : null;
+}
 
 var LANES = {top100:["Gong","ECE"], customer:["ECE","Gong"], field:["Heartbeat","Time in Motion","Roundtable","derived/analysis"]};
 var SENT_ORDER = {red:0,amber:1,green:2,neutral:3};
@@ -115,7 +123,7 @@ function renderTimeseries(){
   svg+='</svg>';
   var legend=t.series.map(function(s){return '<span><i class="swatch-'+s.color+'"></i>'+esc(s.name)+'</span>';}).join("");
   $("#timeseries").innerHTML='<div class="chart-head"><div><h2 class="h">'+esc(t.title)+'</h2><p class="h-sub">'+esc(t.sub)+'</p></div></div>'+
-    svg+'<div class="legend">'+legend+'</div><p class="card-note">'+esc(t.note)+'</p>';
+    svg+'<div class="legend">'+legend+'</div><p class="card-note">'+esc(t.note)+'</p>'+(t.fix?'<div class="topfix">'+esc(t.fix)+'</div>':'');
 }
 
 /* ---------- word cloud (reactive to filters) ---------- */
@@ -150,7 +158,7 @@ function renderMix(){
   }).join("");
   var legend=m.cats.map(function(c,i){return '<span><i style="background:'+COLS[i%COLS.length]+'"></i>'+esc(c)+'</span>';}).join("");
   $("#mix").innerHTML='<div class="chart-head"><div><h2 class="h">'+esc(m.title)+'</h2><p class="h-sub">'+esc(m.sub)+'</p></div></div>'+
-    rows+'<div class="legend">'+legend+'</div><p class="card-note">'+esc(m.note)+'</p>';
+    rows+'<div class="legend">'+legend+'</div><p class="card-note">'+esc(m.note)+'</p>'+(m.caveat?'<p class="caveat">'+esc(m.caveat)+'</p>':'');
 }
 
 /* ---------- trending ---------- */
@@ -212,7 +220,8 @@ function renderVerbatims(filtered){
   }
   var SRCLAB={"derived/analysis":"Analysis","Time in Motion":"Time in Motion","Gong":"Gong","ECE":"ECE","Heartbeat":"Heartbeat","Roundtable":"Roundtable"};
   $("#verbatims").innerHTML = shown.map(function(s){
-    var cnt = s.count? '<div class="vcount num">'+esc(s.count)+'<small>n similar</small></div>':'';
+    var sc = (s.type==="verbatim") ? similarCount(s.count) : null;
+    var cnt = sc? '<div class="vcount num">'+esc(sc)+'<small>n similar</small></div>':'';
     var seg = s.seg && s.seg!=="cross" && s.seg!=="unknown" ? '<span class="chip">'+esc(s.seg==="MM"?"Mid-Market":s.seg)+'</span>':'';
     var prod = s.prod && s.prod!=="unknown" ? '<span class="chip">'+esc(s.prod==="both"?"IES / IAS":s.prod)+'</span>':'';
     var who = s.who? '<span class="who">'+esc(s.who)+'</span>':'';

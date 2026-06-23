@@ -77,6 +77,8 @@ main{max-width:var(--maxw);margin:0 auto;padding:22px 28px 60px;}
 h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .h-sub{font-size:.78rem;color:var(--muted);margin:3px 0 0;}
 .card-note{font-size:.78rem;color:var(--ink-soft);margin:14px 0 0;padding-top:12px;border-top:1px dashed var(--line-strong);line-height:1.5;}
+.topfix{font-size:.8rem;color:var(--ink);background:var(--green-bg);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:9px 13px;margin:11px 0 0;line-height:1.45;}
+.caveat{font-size:.72rem;color:var(--muted);font-style:italic;margin:9px 0 0;}
 
 /* ---------- KPI strip ---------- */
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
