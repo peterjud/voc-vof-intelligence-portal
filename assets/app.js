@@ -5,7 +5,7 @@ var $ = function(s,r){return (r||document).querySelector(s);};
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
 function fmtDate(iso){var m=["January","February","March","April","May","June","July","August","September","October","November","December"];var p=iso.split("-");return m[+p[1]-1]+" "+(+p[2])+", "+p[0];}
 
-var LANES = {customer:["ECE","Gong"], field:["Heartbeat","Time in Motion","Roundtable","derived/analysis"]};
+var LANES = {top100:["Gong","ECE"], customer:["ECE","Gong"], field:["Heartbeat","Time in Motion","Roundtable","derived/analysis"]};
 var SENT_ORDER = {red:0,amber:1,green:2,neutral:3};
 
 var state = {lane:"all", segment:"", product:"", source:"", theme:"", sentiment:"", q:""};
@@ -44,17 +44,28 @@ $("#reset").addEventListener("click",function(){
 });
 
 /* ---------- tabs ---------- */
+var VALID_LANES=["all","top100","customer","field","partners","investors"];
+function selectLane(lane){
+  if(VALID_LANES.indexOf(lane)<0) lane="all";
+  document.querySelectorAll(".tab").forEach(function(x){x.setAttribute("aria-selected", x.dataset.lane===lane?"true":"false");});
+  state.lane=lane;
+}
 Array.prototype.slice.call(document.querySelectorAll(".tab")).forEach(function(t){
-  t.addEventListener("click",function(){
-    document.querySelectorAll(".tab").forEach(function(x){x.setAttribute("aria-selected","false");});
-    t.setAttribute("aria-selected","true");
-    state.lane=t.dataset.lane;render();
-  });
+  t.addEventListener("click",function(){selectLane(t.dataset.lane);if(location.hash!=="#"+t.dataset.lane)location.hash=t.dataset.lane;render();});
 });
+window.addEventListener("hashchange",function(){selectLane((location.hash||"").replace("#",""));render();});
 
 /* ---------- KPI ---------- */
+var KPIS_TOP100=[
+ {sentiment:"neutral",seg:"Top 100 · Gong",label:"Calls analyzed",value:"1,243",delta:"",dir:"flat",bad:false,sub:"60 of 77 firms · rolling 12 months"},
+ {sentiment:"red",seg:"Top 100 · churn",label:"High-priority escalations",value:"62",delta:"",dir:"flat",bad:true,sub:"#1 churn driver · 5.0% of calls"},
+ {sentiment:"neutral",seg:"Top 100 · demand",label:"Multi-entity consolidation",value:"299",delta:"",dir:"flat",bad:false,sub:"#1 capability ask · 24.1% of calls"},
+ {sentiment:"neutral",seg:"Top 100 · migration",label:"QB Desktop → IES",value:"167",delta:"",dir:"flat",bad:false,sub:"dominant migration path · 13.4%"},
+ {sentiment:"amber",seg:"Executive (ECE)",label:"Named AI a top-3 priority",value:"100%",delta:"",dir:"flat",bad:false,sub:"all 7 firms · none had a clear path"}
+];
 function renderKPIs(){
-  $("#kpis").innerHTML = D.kpis.map(function(k){
+  var arr = (state.lane==="top100"||state.lane==="customer") ? KPIS_TOP100 : D.kpis;
+  $("#kpis").innerHTML = arr.map(function(k){
     var cls = k.delta? (k.bad?"bad":"good") : "flat";
     var arrow = k.dir==="down"?"▼":k.dir==="up"?"▲":"→";
     return '<div class="kpi '+k.sentiment+'">'+
@@ -210,7 +221,11 @@ function render(){
     $("#empty-title").textContent = state.lane==="partners"?"Partner signals":"Investor signals";
     return;
   }
+  // Top 100 and Customer lanes hide field-only (Time-in-Motion) panels to stay on the customer-firm story
+  var hideField = (state.lane==="top100"||state.lane==="customer");
+  Array.prototype.slice.call(document.querySelectorAll(".fieldonly")).forEach(function(el){el.classList.toggle("hidden",hideField);});
   renderKPIs();renderTimeseries();renderWordcloud();renderMix();renderTrending();renderCoverage();renderVerbatims();
 }
+selectLane((location.hash||"").replace("#",""));
 render();
 })();

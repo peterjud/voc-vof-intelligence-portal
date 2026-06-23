@@ -35,6 +35,9 @@ a{color:var(--brand);}
 .tab{appearance:none;border:0;background:transparent;color:#9fb6cf;font-size:.85rem;font-weight:600;padding:11px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
 .tab[aria-selected="true"]{color:#fff;border-bottom-color:var(--brand);}
 .tab .soon{font-size:.6rem;opacity:.7;margin-left:5px;text-transform:uppercase;letter-spacing:.06em;}
+.tab.tab-feature{color:#dce9fb;}
+.tab.tab-feature[aria-selected="true"]{color:#fff;}
+.tab .hot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#3ddc84;margin-right:7px;vertical-align:1px;box-shadow:0 0 0 3px rgba(61,220,132,.18);}
 .tabwrap{background:var(--brand-deep);}
 
 /* ---------- Filter bar ---------- */
