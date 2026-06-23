@@ -56,10 +56,20 @@ Array.prototype.slice.call(document.querySelectorAll(".tab")).forEach(function(t
 });
 window.addEventListener("hashchange",function(){selectLane((location.hash||"").replace("#",""));render();});
 
-/* ---------- KPI (reactive to filters) ---------- */
+/* ---------- KPI ---------- */
 var BASELINE = D.signals.filter(function(s){return !s.commentary;}).length;
 function mode(arr){var m={},best="—",bc=0;arr.forEach(function(x){if(!x)return;m[x]=(m[x]||0)+1;if(m[x]>bc){bc=m[x];best=x;}});return {key:best,count:bc};}
+// Top 100 / Customer lanes: deck-accurate program metrics (SLRN-425)
+var KPIS_TOP100=[
+ {sentiment:"neutral",seg:"Top 100 · Gong",label:"Calls analyzed",value:"1,243",sub:"60 of 77 T100 firms · rolling 12 mo"},
+ {sentiment:"amber",seg:"Top 100 · churn",label:"Calls with a churn signal",value:"212",sub:"the base for the churn mix below"},
+ {sentiment:"red",seg:"#1 churn driver",label:"Escalations stall deals",value:"33%",sub:"60 calls · issues recur call-to-call"},
+ {sentiment:"red",seg:"#2 churn driver",label:"Capability gaps at demo",value:"28%",sub:"52 calls · demo reveals the gap"},
+ {sentiment:"amber",seg:"#3 churn driver",label:"Pricing — structure",value:"21%",sub:"39 calls · can't commit / pass through"}
+];
+function kpiTile(k){return '<div class="kpi '+k.sentiment+'"><div class="seg">'+esc(k.seg)+'</div><div class="lab">'+esc(k.label)+'</div><div class="v num">'+esc(k.value)+'</div><div class="sub">'+esc(k.sub)+'</div></div>';}
 function renderKPIs(F){
+  if(state.lane==="top100"||state.lane==="customer"){$("#kpis").innerHTML=KPIS_TOP100.map(kpiTile).join("");return;}
   var red=0,green=0,amber=0;
   F.forEach(function(s){if(s.sentiment==="red")red++;else if(s.sentiment==="green")green++;else if(s.sentiment==="amber")amber++;});
   var n=F.length||1, SRCL={"derived/analysis":"Analysis"};
@@ -71,13 +81,7 @@ function renderKPIs(F){
    {sentiment:"neutral",seg:"Largest source",label:(SRCL[sr.key]||sr.key||"—"),value:String(sr.count||0),sub:"signals from this source"},
    {sentiment:"green",seg:"Positive",label:"Green signals",value:String(green),sub:Math.round(100*green/n)+"% of this view"}
   ];
-  $("#kpis").innerHTML = tiles.map(function(k){
-    return '<div class="kpi '+k.sentiment+'">'+
-      '<div class="seg">'+esc(k.seg)+'</div>'+
-      '<div class="lab">'+esc(k.label)+'</div>'+
-      '<div class="v num">'+esc(k.value)+'</div>'+
-      '<div class="sub">'+esc(k.sub)+'</div></div>';
-  }).join("");
+  $("#kpis").innerHTML = tiles.map(kpiTile).join("");
 }
 
 /* ---------- time series (SVG) ---------- */
