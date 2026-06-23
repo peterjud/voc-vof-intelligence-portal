@@ -9,6 +9,7 @@ var LANES = {top100:["Gong","ECE"], customer:["ECE","Gong"], field:["Heartbeat",
 var SENT_ORDER = {red:0,amber:1,green:2,neutral:3};
 
 var state = {lane:"all", segment:"", product:"", source:"", theme:"", sentiment:"", q:""};
+var frictionFilter = {critical:true, high:true, medium:true};
 
 /* ---------- header ---------- */
 $("#updated").textContent = "Updated "+fmtDate(D.meta.updated);
@@ -55,24 +56,26 @@ Array.prototype.slice.call(document.querySelectorAll(".tab")).forEach(function(t
 });
 window.addEventListener("hashchange",function(){selectLane((location.hash||"").replace("#",""));render();});
 
-/* ---------- KPI ---------- */
-var KPIS_TOP100=[
- {sentiment:"neutral",seg:"Top 100 · Gong",label:"Calls analyzed",value:"1,243",delta:"",dir:"flat",bad:false,sub:"60 of 77 firms · rolling 12 months"},
- {sentiment:"red",seg:"Top 100 · churn",label:"High-priority escalations",value:"62",delta:"",dir:"flat",bad:true,sub:"#1 churn driver · 5.0% of calls"},
- {sentiment:"neutral",seg:"Top 100 · demand",label:"Multi-entity consolidation",value:"299",delta:"",dir:"flat",bad:false,sub:"#1 capability ask · 24.1% of calls"},
- {sentiment:"neutral",seg:"Top 100 · migration",label:"QB Desktop → IES",value:"167",delta:"",dir:"flat",bad:false,sub:"dominant migration path · 13.4%"},
- {sentiment:"amber",seg:"Executive (ECE)",label:"Named AI a top-3 priority",value:"100%",delta:"",dir:"flat",bad:false,sub:"all 7 firms · none had a clear path"}
-];
-function renderKPIs(){
-  var arr = (state.lane==="top100"||state.lane==="customer") ? KPIS_TOP100 : D.kpis;
-  $("#kpis").innerHTML = arr.map(function(k){
-    var cls = k.delta? (k.bad?"bad":"good") : "flat";
-    var arrow = k.dir==="down"?"▼":k.dir==="up"?"▲":"→";
+/* ---------- KPI (reactive to filters) ---------- */
+var BASELINE = D.signals.filter(function(s){return !s.commentary;}).length;
+function mode(arr){var m={},best="—",bc=0;arr.forEach(function(x){if(!x)return;m[x]=(m[x]||0)+1;if(m[x]>bc){bc=m[x];best=x;}});return {key:best,count:bc};}
+function renderKPIs(F){
+  var red=0,green=0,amber=0;
+  F.forEach(function(s){if(s.sentiment==="red")red++;else if(s.sentiment==="green")green++;else if(s.sentiment==="amber")amber++;});
+  var n=F.length||1, SRCL={"derived/analysis":"Analysis"};
+  var th=mode(F.map(function(s){return s.theme;})), sr=mode(F.map(function(s){return s.src;}));
+  var tiles=[
+   {sentiment:"neutral",seg:"In view",label:"Signals matching",value:String(F.length),sub:"of "+BASELINE+" classified"},
+   {sentiment:"red",seg:"Needs attention",label:"Alerts",value:String(red),sub:Math.round(100*red/n)+"% of this view"},
+   {sentiment:"amber",seg:"Most-cited theme",label:(th.key||"—"),value:String(th.count||0),sub:"signals on this theme"},
+   {sentiment:"neutral",seg:"Largest source",label:(SRCL[sr.key]||sr.key||"—"),value:String(sr.count||0),sub:"signals from this source"},
+   {sentiment:"green",seg:"Positive",label:"Green signals",value:String(green),sub:Math.round(100*green/n)+"% of this view"}
+  ];
+  $("#kpis").innerHTML = tiles.map(function(k){
     return '<div class="kpi '+k.sentiment+'">'+
       '<div class="seg">'+esc(k.seg)+'</div>'+
       '<div class="lab">'+esc(k.label)+'</div>'+
       '<div class="v num">'+esc(k.value)+'</div>'+
-      (k.delta?'<div class="delta '+cls+'">'+arrow+' '+esc(k.delta)+'</div>':'')+
       '<div class="sub">'+esc(k.sub)+'</div></div>';
   }).join("");
 }
@@ -216,6 +219,35 @@ function renderVerbatims(filtered){
   }).join("") + (list.length>CAP? '<div class="card empty" style="grid-column:1/-1;padding:14px"><p>Showing '+CAP+' of '+list.length+' — narrow with a filter to see the rest.</p></div>':'');
 }
 
+/* ---------- friction table (signal strength) ---------- */
+function renderFriction(){
+  var F=D.friction; if(!F){return;}
+  var SIG={critical:"Critical",high:"High",medium:"Medium"}, BARS={critical:3,high:2,medium:1};
+  var rows=F.filter(function(r){return frictionFilter[r.signal];}).map(function(r){
+    var meter='<span class="fmeter '+r.signal+'">'+[0,1,2].map(function(i){return '<i class="'+(i<BARS[r.signal]?"on":"")+'"></i>';}).join("")+'</span>';
+    var detail='<tr class="fdetail" id="fd-'+r.rank+'"><td colspan="6"><div class="fdetail-in"><span class="lab">Linked verbatim</span><blockquote>“'+esc(r.verbatim||"To be confirmed against the Gong source.")+'”</blockquote><span class="who">'+esc(r.who)+'</span></div></td></tr>';
+    return '<tr class="frow" data-rank="'+r.rank+'" tabindex="0" role="button">'+
+      '<td><span class="frk">'+r.rank+'</span></td>'+
+      '<td class="ftheme">'+esc(r.theme)+' <span class="chev">›</span></td>'+
+      '<td class="fprod">'+esc(r.product)+'</td>'+
+      '<td class="fcat">'+esc(r.category)+'</td>'+
+      '<td><span class="sigwrap"><span class="sigbadge '+r.signal+'">'+SIG[r.signal]+'</span>'+meter+'</span></td>'+
+      '<td class="ffirms num">'+esc(r.firms)+'</td></tr>'+detail;
+  }).join("");
+  var toggles=["critical","high","medium"].map(function(s){return '<button class="sigtoggle '+s+(frictionFilter[s]?" on":"")+'" data-sig="'+s+'">'+SIG[s]+'</button>';}).join("");
+  $("#friction").innerHTML=
+    '<div class="chart-head"><div><h2 class="h">Top customer friction points</h2><p class="h-sub">Gong call analytics across Top 30–100 firm conversations · signal strength = firm-citation breadth × deal-blocker weight</p></div>'+
+    '<div class="sigtoggles"><span class="sigtoglab">Signal strength</span>'+toggles+'</div></div>'+
+    '<div class="fnote">Directional — not a representative sample of all Top firms. Tap a row for the linked verbatim.</div>'+
+    '<div class="tablewrap"><table class="ftable"><thead><tr><th>#</th><th>Friction theme</th><th>Product</th><th>Category</th><th>Signal strength</th><th class="num">Firms heard</th></tr></thead><tbody>'+(rows||'<tr><td colspan="6" style="padding:18px;color:var(--muted)">No themes at this signal strength — toggle one on.</td></tr>')+'</tbody></table></div>';
+  Array.prototype.slice.call(document.querySelectorAll("#friction .sigtoggle")).forEach(function(b){b.addEventListener("click",function(){frictionFilter[b.dataset.sig]=!frictionFilter[b.dataset.sig];renderFriction();});});
+  Array.prototype.slice.call(document.querySelectorAll("#friction .frow")).forEach(function(tr){
+    function toggle(){var d=document.getElementById("fd-"+tr.dataset.rank);if(d){tr.classList.toggle("open",d.classList.toggle("show"));}}
+    tr.addEventListener("click",toggle);
+    tr.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+  });
+}
+
 /* ---------- live filter summary ---------- */
 function renderSummary(filtered){
   var box=$("#filtersummary");
@@ -259,9 +291,11 @@ function render(){
   }
   // Top 100 and Customer lanes hide field-only (Time-in-Motion) panels to stay on the customer-firm story
   var hideField = (state.lane==="top100"||state.lane==="customer");
+  var hideCustomer = (state.lane==="field");
   Array.prototype.slice.call(document.querySelectorAll(".fieldonly")).forEach(function(el){el.classList.toggle("hidden",hideField);});
+  Array.prototype.slice.call(document.querySelectorAll(".customeronly")).forEach(function(el){el.classList.toggle("hidden",hideCustomer);});
   var filtered = D.signals.filter(matches);
-  renderKPIs();renderTimeseries();renderMix();renderTrending();renderCoverage();
+  renderKPIs(filtered);renderTimeseries();renderMix();renderTrending();renderCoverage();renderFriction();
   renderWordcloud(filtered);
   renderSummary(filtered);
   renderVerbatims(filtered);
