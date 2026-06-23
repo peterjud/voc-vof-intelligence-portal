@@ -213,6 +213,7 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .fwfirm{font-weight:700;font-size:.88rem;color:var(--ink);}
 .fwsub{font-size:.7rem;color:var(--muted);margin-top:1px;}
 .fwissue{font-weight:600;color:var(--ink);font-size:.84rem;}
+.fwbd{font-size:.84rem;color:var(--ink);margin:4px 0 12px;line-height:1.45;}
 .fmeter{display:inline-flex;gap:3px;}
 .fmeter i{width:7px;height:16px;border-radius:2px;background:var(--line-strong);}
 .fmeter.critical i.on{background:var(--brand-deep);}

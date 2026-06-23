@@ -197,11 +197,16 @@ function renderFirmWatch(){
     var bits=[]; if(r.tier&&r.tier!=="—")bits.push(r.tier); if(r.calls&&r.calls!=="—")bits.push(r.calls+" calls");
     var sub=bits.join(" · ")||"Gong-covered";
     var sent=r.sentiment==="positive"?"green":r.sentiment==="negative"?"red":"neutral";
-    return '<tr><td><div class="fwfirm">'+esc(r.firm)+'</div><div class="fwsub">'+esc(sub)+'</div></td>'+
+    var did="fw-"+r.firm.replace(/[^a-z0-9]/gi,"").toLowerCase();
+    var detail='<tr class="fdetail" id="'+did+'"><td colspan="5"><div class="fdetail-in">'+
+      (r.breakdown?'<span class="lab">Signal breakdown</span><p class="fwbd">'+esc(r.breakdown)+'</p>':'')+
+      (r.verbatim?'<span class="lab">What they said</span><blockquote>“'+esc(r.verbatim)+'”</blockquote>'+(r.who?'<span class="who">'+esc(r.who)+'</span>':''):'')+
+      '</div></td></tr>';
+    return '<tr class="frow" data-d="'+did+'" tabindex="0" role="button"><td><div class="fwfirm">'+esc(r.firm)+' <span class="chev">›</span></div><div class="fwsub">'+esc(sub)+'</div></td>'+
       '<td><span class="sigbadge '+r.signal+'">'+SIG[r.signal]+'</span></td>'+
       '<td class="fcat">Gong · call</td>'+
       '<td class="fwissue">'+esc(r.issue)+'</td>'+
-      '<td><span class="tag '+sent+'">'+esc(r.sentiment)+'</span></td></tr>';
+      '<td><span class="tag '+sent+'">'+esc(r.sentiment)+'</span></td></tr>'+detail;
   }).join("");
   var s=W.sentiment;
   var bar='<div class="fwsent"><span class="fwseg" style="width:'+s.pos+'%;background:var(--green)" title="Positive '+s.pos+'%"></span>'+
@@ -216,6 +221,11 @@ function renderFirmWatch(){
    '<div class="tablewrap"><table class="ftable"><thead><tr><th>Firm</th><th>Signal</th><th>Source</th><th>Top issue</th><th>Sentiment</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
    '<div class="fnote">'+esc(W.caveat)+'</div>';
   Array.prototype.slice.call(document.querySelectorAll("#firmWatch [data-ff]")).forEach(function(b){b.addEventListener("click",function(){firmFilter=b.dataset.ff;renderFirmWatch();});});
+  Array.prototype.slice.call(document.querySelectorAll("#firmWatch .frow")).forEach(function(tr){
+    function toggle(){var d=document.getElementById(tr.dataset.d);if(d){tr.classList.toggle("open",d.classList.toggle("show"));}}
+    tr.addEventListener("click",toggle);
+    tr.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+  });
 }
 
 /* reusable rich expandable insight table (friction-table styling) */
