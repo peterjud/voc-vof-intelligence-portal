@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer &amp; Field Intelligence Portal — Intuit Commercial Sales</title>
+<meta name="description" content="Voice of Customer and Voice of Field signal portal for Intuit Commercial Sales. Confidential.">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <div class="mast-l">
+      <p class="eyebrow">Intuit Commercial Sales</p>
+      <h1>Customer &amp; Field Intelligence Portal</h1>
+      <p class="sub">Voice of Customer / Voice of Field — one signal, before the meeting</p>
+    </div>
+    <div class="mast-r">
+      <span class="updated"><span class="dot"></span><span id="updated">Updated —</span></span>
+      <span class="conf" id="scope">Confidential</span>
+    </div>
+  </div>
+  <div class="tabwrap">
+    <nav class="tabs" id="tabs" role="tablist">
+      <button class="tab" data-lane="all" role="tab" aria-selected="true">All signals</button>
+      <button class="tab" data-lane="customer" role="tab" aria-selected="false">Customer</button>
+      <button class="tab" data-lane="field" role="tab" aria-selected="false">Field</button>
+      <button class="tab" data-lane="partners" role="tab" aria-selected="false">Partners<span class="soon">soon</span></button>
+      <button class="tab" data-lane="investors" role="tab" aria-selected="false">Investors<span class="soon">soon</span></button>
+    </nav>
+  </div>
+</header>
+
+<div class="filterbar">
+  <div class="filter-inner">
+    <div class="fl"><label>Segment</label><select id="f-segment"></select></div>
+    <div class="fl"><label>Product</label><select id="f-product"></select></div>
+    <div class="fl"><label>Source / signal</label><select id="f-source"></select></div>
+    <div class="fl"><label>Theme</label><select id="f-theme"></select></div>
+    <div class="fl"><label>Sentiment</label><select id="f-sentiment"></select></div>
+    <div class="search"><label>Search all verbatims</label><input id="f-search" type="search" placeholder="e.g. payroll, handoff, migration, NetSuite…"></div>
+    <button class="btn-reset" id="reset">Reset</button>
+    <span class="result-count" id="rc"></span>
+  </div>
+</div>
+
+<main>
+  <!-- Data-bearing lanes -->
+  <div id="lane-data">
+    <div class="section-tag"><span class="pp">P1</span>Signal at a glance</div>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="section-tag"><span class="pp">P2 · P5</span>What's moving, and what's behind it</div>
+    <div class="grid-2">
+      <div class="card" id="timeseries"></div>
+      <div class="card" id="wordcloud"></div>
+    </div>
+
+    <div class="section-tag"><span class="pp">P3</span>Where the week goes</div>
+    <div class="card" id="mix"></div>
+
+    <div class="section-tag"><span class="pp">P6</span>Trending in the field &amp; the Top 100</div>
+    <div class="grid-3" id="trending"></div>
+
+    <div class="section-tag"><span class="pp">P4 · P7</span>What they actually said</div>
+    <div class="card" style="padding-bottom:6px;">
+      <div class="vmeta">
+        <div><h2 class="h">Verbatims with scale</h2><p class="h-sub">Every quote carries its count — how many others said the same. Filtered by the bar above.</p></div>
+      </div>
+    </div>
+    <div class="vgrid" id="verbatims" style="margin-top:12px;"></div>
+
+    <div class="section-tag"><span class="pp">P9</span>Source coverage</div>
+    <div class="card" id="coverage"></div>
+  </div>
+
+  <!-- Empty lanes -->
+  <div id="lane-empty" class="hidden">
+    <div class="card soon-wrap">
+      <span class="soon-badge">Awaiting feed</span>
+      <h2 id="empty-title">Partner signals</h2>
+      <p id="empty-body">This lane is part of the model but no source is connected yet. When partner or investor signals come online they will populate here automatically — same structure as Customer and Field. No placeholder numbers are shown.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span id="foot"></span>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
