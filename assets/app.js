@@ -223,6 +223,19 @@ function renderVerbatims(filtered){
   }).join("") + (list.length>CAP? '<div class="card empty" style="grid-column:1/-1;padding:14px"><p>Showing '+CAP+' of '+list.length+' — narrow with a filter to see the rest.</p></div>':'');
 }
 
+/* ---------- Heartbeat panel ---------- */
+function renderHeartbeat(){
+  var H=D.heartbeat; if(!H){return;}
+  function rows(arr,kind){return arr.map(function(r){
+    return '<div class="hbrow"><div class="hbq">'+esc(r.q)+'</div><div class="hbsc '+kind+'"><b>'+esc(r.score)+'</b><small>'+esc(r.pct)+'</small></div></div>';
+  }).join("");}
+  $("#heartbeat").innerHTML=
+   '<div class="chart-head"><div><h2 class="h">What sellers feel</h2><p class="h-sub">Heartbeat daily survey · 1–5 agree scale · '+esc(H.window)+'</p></div>'+
+   '<div class="hbstat"><span><b>'+esc(H.sentiment)+'</b> avg sentiment</span><span><b>'+esc(H.response)+'</b> response</span><span><b>'+esc(H.n)+'</b> records</span></div></div>'+
+   '<div class="hbgrid"><div class="hbcol"><div class="hbcap good">What\'s working</div>'+rows(H.top,"good")+'</div>'+
+   '<div class="hbcol"><div class="hbcap bad">What\'s not</div>'+rows(H.bottom,"bad")+'</div></div>';
+}
+
 /* ---------- friction table (signal strength) ---------- */
 function renderFriction(){
   var F=D.friction; if(!F){return;}
@@ -298,8 +311,10 @@ function render(){
   var hideCustomer = (state.lane==="field");
   Array.prototype.slice.call(document.querySelectorAll(".fieldonly")).forEach(function(el){el.classList.toggle("hidden",hideField);});
   Array.prototype.slice.call(document.querySelectorAll(".customeronly")).forEach(function(el){el.classList.toggle("hidden",hideCustomer);});
+  // source filter reshapes the field panels: TIM section shows for TIM, Heartbeat section for Heartbeat
+  Array.prototype.slice.call(document.querySelectorAll(".srcsec")).forEach(function(el){el.classList.toggle("hidden", !(state.source===""||state.source===el.dataset.src));});
   var filtered = D.signals.filter(matches);
-  renderKPIs(filtered);renderTimeseries();renderMix();renderTrending();renderCoverage();renderFriction();
+  renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();renderTrending();renderCoverage();renderFriction();
   renderWordcloud(filtered);
   renderSummary(filtered);
   renderVerbatims(filtered);
