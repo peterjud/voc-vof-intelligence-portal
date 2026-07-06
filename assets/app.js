@@ -19,6 +19,9 @@ var SENT_ORDER = {red:0,amber:1,green:2,neutral:3};
 var state = {lane:"all", segment:"", product:"", source:"", theme:"", sentiment:"", q:""};
 var frictionFilter = {critical:true, high:true, medium:true};
 var firmFilter = "all";
+var v2cut = "Combined"; // Top 100 product view: Combined / IES / IAS
+function fmtM(n){n=+n||0; if(n>=1e6){var m=(n/1e6); return (m>=10?m.toFixed(1):m.toFixed(2)).replace(/\.?0+$/,'')+"M";} if(n>=1e3) return Math.round(n/1e3)+"K"; return String(Math.round(n));}
+function cleanFirm(n){var m=String(n).split(",")[0].replace(/\s+\d+\b.*$/,"").replace(/\s+-\s+.*$/,"").trim(); return m||n;}
 
 /* ---------- header ---------- */
 $("#updated").textContent = "Updated "+fmtDate(D.meta.updated);
@@ -65,6 +68,52 @@ Array.prototype.slice.call(document.querySelectorAll(".tab")).forEach(function(t
 });
 window.addEventListener("hashchange",function(){selectLane((location.hash||"").replace("#",""));render();});
 
+/* ---------- Top 100 product toggle (Combined / IES / IAS) ---------- */
+Array.prototype.slice.call(document.querySelectorAll(".cuttog")).forEach(function(b){
+  b.addEventListener("click",function(){v2cut=b.dataset.cut;render();var v=$("#gapsSection");if(v)window.scrollTo({top:v.getBoundingClientRect().top+window.pageYOffset-120,behavior:"smooth"});});
+});
+function renderCutbar(){
+  Array.prototype.slice.call(document.querySelectorAll(".cuttog")).forEach(function(b){b.classList.toggle("on",b.dataset.cut===v2cut);});
+  var c=D.v2.cuts[v2cut];
+  $("#cutmeta").innerHTML=c.calls.toLocaleString()+" calls · "+c.firms+" firms · "+c.deals+" lost deals · $"+fmtM(c.dollars)+" closed-lost";
+}
+function kpisTop100(){
+  var c=D.v2.cuts[v2cut], cov=c.deals?Math.round(100*c.dollars_cov/c.deals):0, d0=c.churn[0];
+  return [
+   {sentiment:"neutral",seg:"Top 100 · "+v2cut,label:"Calls analyzed",value:c.calls.toLocaleString(),sub:c.firms+" firms"+(v2cut==="Combined"?" · 105 of 207 · V2 delivered":"")},
+   {sentiment:"neutral",seg:"Pipeline",label:"Closed-lost deals",value:String(c.deals),sub:"rolling 12-mo window"},
+   {sentiment:"amber",seg:"Closed-lost $",label:"Pipeline in view",value:"$"+fmtM(c.dollars),sub:"Salesforce · ~"+cov+"% coverage — a floor"},
+   {sentiment:"red",seg:"#1 driver",label:d0[0],value:d0[2]+"%",sub:d0[1]+" calls"},
+   {sentiment:"neutral",seg:"Co-sell",label:"Calls that are co-sell",value:c.cosell_pct+"%",sub:c.cosell+" calls · not firms' own deals"}
+  ];
+}
+function renderIesVsIas(){
+  var box=$("#iesVsIas");
+  if(v2cut!=="Combined"){box.innerHTML="";return;}
+  var IV=D.iesVsIas;
+  var cols=IV.rows.map(function(r){
+    return '<div class="ivcol '+r.color+'"><div class="ivside">'+esc(r.side)+'</div><div class="ivlabel">'+esc(r.label)+'</div><ul>'+r.points.map(function(p){return '<li>'+esc(p)+'</li>';}).join("")+'</ul></div>';
+  }).join("");
+  box.innerHTML='<div class="section-tag">'+esc(IV.title)+'</div><div class="card"><p class="h-sub" style="margin:0 0 12px">'+esc(IV.sub)+'</p><div class="ivgrid">'+cols+'</div></div>';
+}
+function renderCompetitors(){
+  var C=D.v2.competitors; if(!C){return;}
+  var key=v2cut==="IES"?"ies":v2cut==="IAS"?"ias":null;
+  var list=C.filter(function(x){return key?(x[key+"_calls"]>0||x[key+"_dollars"]>0):(x.calls>0);})
+            .sort(function(a,b){return (key?b[key+"_dollars"]:b.dollars)-(key?a[key+"_dollars"]:a.dollars);}).slice(0,12);
+  var rows=list.map(function(x){
+    var calls=key?x[key+"_calls"]:x.calls, dol=key?x[key+"_dollars"]:x.dollars;
+    var whale=x.deals<=2 && x.dollars>=500000;
+    return '<tr><td><div class="fwfirm">'+esc(x.name)+(whale?' <span class="whale">whale · '+x.deals+' deal'+(x.deals===1?'':'s')+'</span>':'')+'</div><div class="fwsub">'+esc(x.seg)+'</div></td>'+
+      '<td class="num">'+calls+'</td><td class="num">'+x.firms+'</td><td class="num">'+x.deals+'</td><td class="num">$'+fmtM(dol)+'</td></tr>';
+  }).join("");
+  $("#competitors").innerHTML=
+   '<div class="chart-head"><div><h2 class="h">Who we lose to — '+v2cut+'</h2><p class="h-sub">Closed-lost deals that named each competitor</p></div></div>'+
+   '<div class="tablewrap"><table class="ftable"><thead><tr><th>Competitor</th><th class="num">Calls</th><th class="num">Firms</th><th class="num">Deals</th><th class="num">$ lost</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+   '<div class="topfix">'+esc(D.netsuiteWhale)+'</div>'+
+   '<div class="fnote">$ = Salesforce closed-lost (linked) on deals naming the competitor. A deal can name more than one, so these are <b>not additive</b>; some are single whale deals (Sage 300 = one deal). Always read $ next to deal count.</div>';
+}
+
 /* ---------- Scorecard (program rollup) ---------- */
 function renderScorecard(){
   var S=D.scorecard; if(!S){return;}
@@ -89,7 +138,7 @@ var KPIS_TOP100=[
 ];
 function kpiTile(k){return '<div class="kpi '+k.sentiment+'"><div class="seg">'+esc(k.seg)+'</div><div class="lab">'+esc(k.label)+'</div><div class="v num">'+esc(k.value)+'</div><div class="sub">'+esc(k.sub)+'</div></div>';}
 function renderKPIs(F){
-  if(state.lane==="top100"||state.lane==="customer"){$("#kpis").innerHTML=KPIS_TOP100.map(kpiTile).join("");return;}
+  if(state.lane==="top100"||state.lane==="customer"){$("#kpis").innerHTML=kpisTop100().map(kpiTile).join("");return;}
   var red=0,green=0,amber=0;
   F.forEach(function(s){if(s.sentiment==="red")red++;else if(s.sentiment==="green")green++;else if(s.sentiment==="amber")amber++;});
   var n=F.length||1, SRCL={"derived/analysis":"Analysis"};
@@ -175,13 +224,17 @@ function renderMix(){
 
 /* ---------- trending ---------- */
 function renderTrendingTwo(){
-  var groups=D.trending.slice(1); // churn is now a rich table; show capability + migration here
+  var c=D.v2.cuts[v2cut];
+  var groups=[
+    {title:"What customers ask "+(v2cut==="IAS"?"IAS":"IES")+" to do",sub:"Gong · capability demand · % of "+c.calls.toLocaleString()+" calls",rows:c.capability},
+    {title:"Migration paths in",sub:"Gong · % of "+c.calls.toLocaleString()+" calls",rows:c.migration}
+  ];
   $("#trendingTwo").innerHTML=groups.map(function(g){
-    var max=Math.max.apply(null,g.rows.map(function(r){return r.v;}));
+    var max=Math.max.apply(null,g.rows.map(function(r){return r[1];}))||1;
     var rows=g.rows.map(function(r,i){
-      return '<div class="trank"><div class="rk">'+(i+1)+'</div><div class="tt">'+esc(r.t)+'</div>'+
-        '<div class="meter"><i class="fill-'+r.s+'" style="width:'+(100*r.v/max)+'%"></i></div>'+
-        '<div class="vv num">'+r.v+' · '+esc(r.p)+'</div></div>';
+      return '<div class="trank"><div class="rk">'+(i+1)+'</div><div class="tt">'+esc(r[0])+'</div>'+
+        '<div class="meter"><i class="fill-brand" style="width:'+(100*r[1]/max)+'%"></i></div>'+
+        '<div class="vv num">'+r[1]+' · '+(Math.round(1000*r[1]/c.calls)/10)+'%</div></div>';
     }).join("");
     return '<div class="card"><h2 class="h" style="font-size:.95rem">'+esc(g.title)+'</h2><p class="h-sub">'+esc(g.sub)+'</p><div style="margin-top:8px">'+rows+'</div></div>';
   }).join("");
@@ -189,36 +242,34 @@ function renderTrendingTwo(){
 
 /* ---------- Top 100 firm watchlist ---------- */
 function renderFirmWatch(){
-  var W=D.firmWatch; if(!W){return;}
-  var SIG={critical:"Critical",high:"High",medium:"Medium",watch:"Watch"};
-  var rows=W.rows.filter(function(r){return firmFilter==="all"||r.signal==="critical"||r.signal==="high";});
-  var body=rows.map(function(r){
-    var bits=[]; if(r.tier&&r.tier!=="—")bits.push(r.tier); if(r.calls&&r.calls!=="—")bits.push(r.calls+" calls");
-    var sub=bits.join(" · ")||"Gong-covered";
+  var W=D.v2.firms[v2cut]; if(!W){return;}
+  var c=D.v2.cuts[v2cut], SIG={critical:"Critical",high:"High",medium:"Medium",watch:"Watch"};
+  var list=W.filter(function(r){return firmFilter==="all"||r.signal==="critical"||r.signal==="high";});
+  var body=list.map(function(r,i){
+    var did="fw-"+v2cut+"-"+i;
     var sent=r.sentiment==="positive"?"green":r.sentiment==="negative"?"red":"neutral";
-    var did="fw-"+r.firm.replace(/[^a-z0-9]/gi,"").toLowerCase();
-    var detail='<tr class="fdetail" id="'+did+'"><td colspan="5"><div class="fdetail-in">'+
-      (r.breakdown?'<span class="lab">Signal breakdown</span><p class="fwbd">'+esc(r.breakdown)+'</p>':'')+
-      (r.verbatim?'<span class="lab">What they said</span><blockquote>“'+esc(r.verbatim)+'”</blockquote>'+(r.who?'<span class="who">'+esc(r.who)+'</span>':''):'')+
+    var top3=(r.top3||[]).map(function(t){return t[0]+" ×"+t[1];}).join(" · ");
+    var detail='<tr class="fdetail" id="'+did+'"><td colspan="7"><div class="fdetail-in">'+
+      (top3?'<span class="lab">Churn signals in this firm\'s calls</span><p class="fwbd">'+esc(top3)+'</p>':'')+
+      (r.snippet?'<span class="lab">Call snippet</span><blockquote>'+esc(r.snippet)+'</blockquote>':'')+
+      (r.cosell?'<div class="kvline"><span class="lab">⚠ Co-sell</span> '+r.cosell_n+' calls flagged co-sell / coaching — call count is inflated, read the deal count.</div>':'')+
       '</div></td></tr>';
-    return '<tr class="frow" data-d="'+did+'" tabindex="0" role="button"><td><div class="fwfirm">'+esc(r.firm)+' <span class="chev">›</span></div><div class="fwsub">'+esc(sub)+'</div></td>'+
+    return '<tr class="frow" data-d="'+did+'" tabindex="0" role="button">'+
+      '<td><div class="fwfirm">'+esc(cleanFirm(r.firm))+' <span class="chev">›</span></div><div class="fwsub">'+r.tier+(r.cosell?' · <span class="cosellflag">co-sell</span>':'')+'</div></td>'+
       '<td><span class="sigbadge '+r.signal+'">'+SIG[r.signal]+'</span></td>'+
-      '<td class="fcat">Gong · call</td>'+
+      '<td class="num">'+r.calls+'</td>'+
+      '<td class="num">'+r.deals+'</td>'+
+      '<td class="num">'+(r.dollars?'$'+fmtM(r.dollars):'—')+'</td>'+
       '<td class="fwissue">'+esc(r.issue)+'</td>'+
       '<td><span class="tag '+sent+'">'+esc(r.sentiment)+'</span></td></tr>'+detail;
   }).join("");
-  var s=W.sentiment;
-  var bar='<div class="fwsent"><span class="fwseg" style="width:'+s.pos+'%;background:var(--green)" title="Positive '+s.pos+'%"></span>'+
-    '<span class="fwseg" style="width:'+s.neg+'%;background:var(--red)" title="Negative '+s.neg+'%"></span>'+
-    '<span class="fwseg" style="width:'+s.neu+'%;background:var(--neutral)" title="Neutral '+s.neu+'%"></span></div>'+
-    '<div class="fwsl">'+s.pos+'% positive · '+s.neg+'% negative · '+s.neu+'% neutral (Gong-tagged calls)</div>';
+  var cov=c.deals?Math.round(100*c.dollars_cov/c.deals):0;
   $("#firmWatch").innerHTML=
-   '<div class="chart-head"><div><h2 class="h">'+esc(W.title)+'</h2><p class="h-sub">'+esc(W.sub)+'</p></div>'+
+   '<div class="chart-head"><div><h2 class="h">Top 100 firm watchlist — '+v2cut+'</h2><p class="h-sub">'+c.firms+' firms · sorted by tier then signal · calls include co-sell/coaching, read deals too</p></div>'+
    '<div class="fwtoggles"><button class="fwtog'+(firmFilter==="all"?" on":"")+'" data-ff="all">All firms</button>'+
    '<button class="fwtog'+(firmFilter==="high"?" on":"")+'" data-ff="high">High signal</button></div></div>'+
-   bar+'<div class="fwcov">'+esc(W.coverage)+'</div>'+
-   '<div class="tablewrap"><table class="ftable"><thead><tr><th>Firm</th><th>Signal</th><th>Source</th><th>Top issue</th><th>Sentiment</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
-   '<div class="fnote">'+esc(W.caveat)+'</div>';
+   '<div class="tablewrap"><table class="ftable"><thead><tr><th>Firm</th><th>Signal</th><th class="num">Calls</th><th class="num">Deals</th><th class="num">$ lost</th><th>Top issue</th><th>Sentiment</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
+   '<div class="fnote">Signal = churn-driver density (directional); co-sell firms capped down. $ lost = Salesforce closed-lost (linked, ~'+cov+'% coverage — a floor). <b>Calls include co-sell/coaching viral calls; deals is the truer count.</b> Diamond firms (T1 with 10+ calls) carry the firm-level read.</div>';
   Array.prototype.slice.call(document.querySelectorAll("#firmWatch [data-ff]")).forEach(function(b){b.addEventListener("click",function(){firmFilter=b.dataset.ff;renderFirmWatch();});});
   Array.prototype.slice.call(document.querySelectorAll("#firmWatch .frow")).forEach(function(tr){
     function toggle(){var d=document.getElementById(tr.dataset.d);if(d){tr.classList.toggle("open",d.classList.toggle("show"));}}
@@ -229,7 +280,7 @@ function renderFirmWatch(){
 
 /* ---------- Top 100 gaps: the takeaway (hero cards) ---------- */
 function renderGaps(){
-  var G=D.top100churn; if(!G){return;}
+  var G = (v2cut==="IAS") ? D.iasGaps : D.top100churn; if(!G){return;}
   var cards=G.rows.map(function(r,i){
     var bullets=(r.bullets||[]).map(function(b){return '<li>'+esc(b)+'</li>';}).join("");
     var did="gap-"+r.rank;
@@ -435,7 +486,7 @@ function render(){
   $("#scorecardSec").classList.toggle("hidden", state.lane!=="all"); // program rollup only on the All view
   var filtered = D.signals.filter(matches);
   renderScorecard();renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
-  renderGaps();renderInsightTable("#eceTable",D.eceThemes);renderFirmWatch();
+  renderCutbar();renderGaps();renderIesVsIas();renderInsightTable("#eceTable",D.eceThemes);renderFirmWatch();renderCompetitors();
   renderTrendingTwo();renderCoverage();renderFriction();
   renderWordcloud(filtered);
   renderSummary(filtered);

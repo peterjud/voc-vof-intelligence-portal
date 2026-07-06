@@ -1,0 +1,1959 @@
+{
+ "cuts": {
+  "IES": {
+   "calls": 1301,
+   "firms": 83,
+   "deals": 185,
+   "dollars": 7619406,
+   "dollars_cov": 135,
+   "churn": [
+    [
+     "Escalations stall deals",
+     66,
+     5.1
+    ],
+    [
+     "Capability gaps at demo",
+     62,
+     4.8
+    ],
+    [
+     "Pricing structure",
+     50,
+     3.8
+    ],
+    [
+     "Training / enablement gaps",
+     40,
+     3.1
+    ],
+    [
+     "Implementation friction",
+     34,
+     2.6
+    ],
+    [
+     "Support quality",
+     18,
+     1.4
+    ]
+   ],
+   "capability": [
+    [
+     "Multi-entity consolidation",
+     351
+    ],
+    [
+     "Class, dimensions & allocation",
+     312
+    ],
+    [
+     "Reporting, forecasting, budgeting",
+     255
+    ],
+    [
+     "Payroll integration",
+     202
+    ],
+    [
+     "IES realm management",
+     138
+    ],
+    [
+     "Project mgmt / change orders",
+     131
+    ]
+   ],
+   "migration": [
+    [
+     "QB Desktop \u2192 IES",
+     194
+    ],
+    [
+     "Other competitor",
+     69
+    ],
+    [
+     "NetSuite \u2192 IES",
+     45
+    ],
+    [
+     "Sage \u2192 IES",
+     44
+    ],
+    [
+     "QBO \u2192 IES",
+     38
+    ]
+   ],
+   "sentiment": {
+    "positive_intent": 168,
+    "negative_friction": 78,
+    "blocker": 12,
+    "postponement": 36
+   },
+   "cosell": 275,
+   "cosell_pct": 21.1
+  },
+  "IAS": {
+   "calls": 212,
+   "firms": 37,
+   "deals": 41,
+   "dollars": 1867695,
+   "dollars_cov": 17,
+   "churn": [
+    [
+     "Escalations stall deals",
+     9,
+     4.2
+    ],
+    [
+     "Pricing structure",
+     9,
+     4.2
+    ],
+    [
+     "Support quality",
+     6,
+     2.8
+    ],
+    [
+     "Training / enablement gaps",
+     4,
+     1.9
+    ],
+    [
+     "Client perception",
+     4,
+     1.9
+    ],
+    [
+     "Capability gaps at demo",
+     3,
+     1.4
+    ]
+   ],
+   "capability": [
+    [
+     "Payroll integration",
+     37
+    ],
+    [
+     "Multi-entity consolidation",
+     35
+    ],
+    [
+     "Reporting, forecasting, budgeting",
+     32
+    ],
+    [
+     "Class, dimensions & allocation",
+     30
+    ],
+    [
+     "IES realm management",
+     24
+    ],
+    [
+     "Project mgmt / change orders",
+     22
+    ]
+   ],
+   "migration": [
+    [
+     "QB Desktop \u2192 IES",
+     17
+    ],
+    [
+     "Other competitor",
+     12
+    ],
+    [
+     "Sage \u2192 IES",
+     6
+    ],
+    [
+     "QBO \u2192 IES",
+     5
+    ],
+    [
+     "NetSuite \u2192 IES",
+     3
+    ]
+   ],
+   "sentiment": {
+    "positive_intent": 26,
+    "negative_friction": 13,
+    "blocker": 1,
+    "postponement": 2
+   },
+   "cosell": 0,
+   "cosell_pct": 0.0
+  },
+  "Combined": {
+   "calls": 1513,
+   "firms": 105,
+   "deals": 226,
+   "dollars": 9487101,
+   "dollars_cov": 152,
+   "churn": [
+    [
+     "Escalations stall deals",
+     75,
+     5.0
+    ],
+    [
+     "Capability gaps at demo",
+     65,
+     4.3
+    ],
+    [
+     "Pricing structure",
+     59,
+     3.9
+    ],
+    [
+     "Training / enablement gaps",
+     44,
+     2.9
+    ],
+    [
+     "Implementation friction",
+     34,
+     2.2
+    ],
+    [
+     "Support quality",
+     24,
+     1.6
+    ]
+   ],
+   "capability": [
+    [
+     "Multi-entity consolidation",
+     386
+    ],
+    [
+     "Class, dimensions & allocation",
+     342
+    ],
+    [
+     "Reporting, forecasting, budgeting",
+     287
+    ],
+    [
+     "Payroll integration",
+     239
+    ],
+    [
+     "IES realm management",
+     162
+    ],
+    [
+     "Project mgmt / change orders",
+     153
+    ]
+   ],
+   "migration": [
+    [
+     "QB Desktop \u2192 IES",
+     211
+    ],
+    [
+     "Other competitor",
+     81
+    ],
+    [
+     "Sage \u2192 IES",
+     50
+    ],
+    [
+     "NetSuite \u2192 IES",
+     48
+    ],
+    [
+     "QBO \u2192 IES",
+     43
+    ]
+   ],
+   "sentiment": {
+    "positive_intent": 194,
+    "negative_friction": 91,
+    "blocker": 13,
+    "postponement": 38
+   },
+   "cosell": 275,
+   "cosell_pct": 18.2
+  }
+ },
+ "competitors": [
+  {
+   "name": "Netsuite",
+   "seg": "mid market erp",
+   "calls": 48,
+   "firms": 26,
+   "deals": 116,
+   "dollars": 1953935,
+   "ies_calls": 45,
+   "ies_dollars": 506990,
+   "ias_calls": 3,
+   "ias_dollars": 1432500
+  },
+  {
+   "name": "Sage Generic",
+   "seg": "mid market erp",
+   "calls": 37,
+   "firms": 21,
+   "deals": 72,
+   "dollars": 1606544,
+   "ies_calls": 35,
+   "ies_dollars": 1594544,
+   "ias_calls": 2,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Sage Intacct",
+   "seg": "mid market erp",
+   "calls": 42,
+   "firms": 21,
+   "deals": 66,
+   "dollars": 1446211,
+   "ies_calls": 36,
+   "ies_dollars": 1424266,
+   "ias_calls": 6,
+   "ias_dollars": 21000
+  },
+  {
+   "name": "Sage 50",
+   "seg": "mid market erp",
+   "calls": 10,
+   "firms": 5,
+   "deals": 29,
+   "dollars": 1192400,
+   "ies_calls": 10,
+   "ies_dollars": 1192400,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Sage 300",
+   "seg": "mid market erp",
+   "calls": 1,
+   "firms": 1,
+   "deals": 2,
+   "dollars": 1109400,
+   "ies_calls": 1,
+   "ies_dollars": 1109400,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Bill Com",
+   "seg": "finance ops",
+   "calls": 72,
+   "firms": 39,
+   "deals": 106,
+   "dollars": 829625,
+   "ies_calls": 62,
+   "ies_dollars": 470930,
+   "ias_calls": 10,
+   "ias_dollars": 331695
+  },
+  {
+   "name": "Quickbooks Enterprise",
+   "seg": "smb accounting",
+   "calls": 47,
+   "firms": 29,
+   "deals": 97,
+   "dollars": 450288,
+   "ies_calls": 42,
+   "ies_dollars": 443973,
+   "ias_calls": 5,
+   "ias_dollars": 6315
+  },
+  {
+   "name": "Paylocity",
+   "seg": "finance ops",
+   "calls": 2,
+   "firms": 2,
+   "deals": 2,
+   "dollars": 330750,
+   "ies_calls": 0,
+   "ies_dollars": 0,
+   "ias_calls": 2,
+   "ias_dollars": 330750
+  },
+  {
+   "name": "Microsoft Dynamics",
+   "seg": "mid market erp",
+   "calls": 8,
+   "firms": 5,
+   "deals": 39,
+   "dollars": 168000,
+   "ies_calls": 8,
+   "ies_dollars": 168000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Adp",
+   "seg": "finance ops",
+   "calls": 13,
+   "firms": 10,
+   "deals": 40,
+   "dollars": 123890,
+   "ies_calls": 8,
+   "ies_dollars": 122000,
+   "ias_calls": 5,
+   "ias_dollars": 1890
+  },
+  {
+   "name": "Xero",
+   "seg": "smb accounting",
+   "calls": 11,
+   "firms": 5,
+   "deals": 53,
+   "dollars": 107890,
+   "ies_calls": 9,
+   "ies_dollars": 106000,
+   "ias_calls": 2,
+   "ias_dollars": 1890
+  },
+  {
+   "name": "Acumatica",
+   "seg": "mid market erp",
+   "calls": 2,
+   "firms": 2,
+   "deals": 52,
+   "dollars": 82000,
+   "ies_calls": 2,
+   "ies_dollars": 82000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Paychex",
+   "seg": "finance ops",
+   "calls": 7,
+   "firms": 6,
+   "deals": 26,
+   "dollars": 81000,
+   "ies_calls": 5,
+   "ies_dollars": 81000,
+   "ias_calls": 2,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Oracle",
+   "seg": "mid market erp",
+   "calls": 2,
+   "firms": 2,
+   "deals": 2,
+   "dollars": 30000,
+   "ies_calls": 2,
+   "ies_dollars": 30000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Gusto",
+   "seg": "finance ops",
+   "calls": 5,
+   "firms": 4,
+   "deals": 23,
+   "dollars": 29000,
+   "ies_calls": 3,
+   "ies_dollars": 29000,
+   "ias_calls": 2,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Sap",
+   "seg": "mid market erp",
+   "calls": 4,
+   "firms": 3,
+   "deals": 3,
+   "dollars": 27000,
+   "ies_calls": 4,
+   "ies_dollars": 27000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Rippling",
+   "seg": "finance ops",
+   "calls": 1,
+   "firms": 1,
+   "deals": 19,
+   "dollars": 24000,
+   "ies_calls": 1,
+   "ies_dollars": 24000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Workday",
+   "seg": "mid market erp",
+   "calls": 1,
+   "firms": 1,
+   "deals": 1,
+   "dollars": 15000,
+   "ies_calls": 1,
+   "ies_dollars": 15000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Brex",
+   "seg": "finance ops",
+   "calls": 2,
+   "firms": 1,
+   "deals": 1,
+   "dollars": 12000,
+   "ies_calls": 2,
+   "ies_dollars": 12000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Sage 100",
+   "seg": "mid market erp",
+   "calls": 1,
+   "firms": 1,
+   "deals": 3,
+   "dollars": 12000,
+   "ies_calls": 1,
+   "ies_dollars": 12000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  },
+  {
+   "name": "Basis Ai",
+   "seg": "firm specific",
+   "calls": 4,
+   "firms": 3,
+   "deals": 4,
+   "dollars": 5000,
+   "ies_calls": 4,
+   "ies_dollars": 5000,
+   "ias_calls": 0,
+   "ias_dollars": 0
+  }
+ ],
+ "firms": {
+  "IES": [
+   {
+    "firm": "Aprio",
+    "tier": "T1",
+    "calls": 237,
+    "deals": 22,
+    "dollars": 716000,
+    "issue": "Implementation friction",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Implementation friction",
+      17
+     ],
+     [
+      "Pricing structure",
+      10
+     ],
+     [
+      "Capability gaps at demo",
+      4
+     ]
+    ],
+    "snippet": "\u2026...iled that they chose Option 3, including a $3,500 implementation fee, and training would occur post-migration, typical...\u2026"
+   },
+   {
+    "firm": "CBIZ MHM, LLC - Accounting Services",
+    "tier": "T1",
+    "calls": 46,
+    "deals": 5,
+    "dollars": 36000,
+    "issue": "Escalations stall deals",
+    "signal": "critical",
+    "sentiment": "negative",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      4
+     ],
+     [
+      "Pricing structure",
+      2
+     ],
+     [
+      "Client perception",
+      2
+     ]
+    ],
+    "snippet": "\u2026..., including bank connection problems that are now escalated to engineering for investigation.\",\"IES Agreemen...\u2026"
+   },
+   {
+    "firm": "CitrinCooperman",
+    "tier": "T1",
+    "calls": 27,
+    "deals": 1,
+    "dollars": 12000,
+    "issue": "Escalations stall deals",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      3
+     ],
+     [
+      "Capability gaps at demo",
+      2
+     ],
+     [
+      "Pricing structure",
+      1
+     ]
+    ],
+    "snippet": "\u2026...tercompany accounting, and dynamic allocations.\",\"Escalation for UI Upgrade: Andy will escalate a support tick...\u2026"
+   },
+   {
+    "firm": "Supporting Strategies",
+    "tier": "T1",
+    "calls": 19,
+    "deals": 4,
+    "dollars": 36335,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Implementation friction",
+      1
+     ],
+     [
+      "Support quality",
+      1
+     ]
+    ],
+    "snippet": "\u2026...volved, incurring unbillable hours.\",\"Request for Escalation: Vanessa asked Scott to expedite getting her feed...\u2026"
+   },
+   {
+    "firm": "Baker Tilly US, LLP - State College",
+    "tier": "T1",
+    "calls": 7,
+    "deals": 3,
+    "dollars": 2242800,
+    "issue": "Pricing structure",
+    "signal": "high",
+    "sentiment": "negative",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Implementation friction",
+      1
+     ]
+    ],
+    "snippet": "\u2026...tted to only a quick glance at the bottom line.\",\"Pricing Concerns: Wendy expressed significant concern over the pr...\u2026"
+   },
+   {
+    "firm": "Eide Bailly LLP 1 - Midwest",
+    "tier": "T1",
+    "calls": 6,
+    "deals": 2,
+    "dollars": 30000,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Training / enablement gaps",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ounting Alliances), Lindsay Wheeler (Sales Leader/Escalation Path), Vishal Shah (IES Specialist), Camille Cons...\u2026"
+   },
+   {
+    "firm": "All BDO USA, LLP",
+    "tier": "T1",
+    "calls": 9,
+    "deals": 2,
+    "dollars": 12000,
+    "issue": "Escalations stall deals",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ce intercompany transactions, which Isabella will escalate.\",\"Intercompany Workflow: Isabella inquired if IE...\u2026"
+   },
+   {
+    "firm": "CRI Dallas Lance Rosenfield",
+    "tier": "T1",
+    "calls": 4,
+    "deals": 1,
+    "dollars": 30000,
+    "issue": "General monitoring",
+    "signal": "medium",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [],
+    "snippet": ""
+   },
+   {
+    "firm": "CLA Midwest",
+    "tier": "T1",
+    "calls": 2,
+    "deals": 1,
+    "dollars": 12000,
+    "issue": "General monitoring",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [],
+    "snippet": ""
+   },
+   {
+    "firm": "Rehmann 1-QB Accountant",
+    "tier": "T2",
+    "calls": 29,
+    "deals": 4,
+    "dollars": 75120,
+    "issue": "Capability gaps at demo",
+    "signal": "critical",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Capability gaps at demo",
+      5
+     ],
+     [
+      "Pricing structure",
+      3
+     ],
+     [
+      "Escalations stall deals",
+      2
+     ]
+    ],
+    "snippet": "\u2026...s like advanced inventory management.\",\"Inventory Feature Gap: Simon admitted that QuickBooks Desktop Enterpris...\u2026"
+   },
+   {
+    "firm": "UHY ADVISORS",
+    "tier": "T2",
+    "calls": 48,
+    "deals": 3,
+    "dollars": 12000,
+    "issue": "Escalations stall deals",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      5
+     ],
+     [
+      "Capability gaps at demo",
+      4
+     ],
+     [
+      "Training / enablement gaps",
+      3
+     ]
+    ],
+    "snippet": "\u2026...e and will provide the case number to Brandon for escalation.\",\"QBO to QBD Conversion: Kelly inquired about co...\u2026"
+   },
+   {
+    "firm": "PKF OCONNOR DAVIES 101",
+    "tier": "T2",
+    "calls": 22,
+    "deals": 2,
+    "dollars": 990,
+    "issue": "Capability gaps at demo",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Capability gaps at demo",
+      2
+     ],
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Training / enablement gaps",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ging the need for evaluation before commitment.\",\"Missing Feature: Kim raises a critical concern about the absence...\u2026"
+   },
+   {
+    "firm": "Pinion LLC",
+    "tier": "T2",
+    "calls": 43,
+    "deals": 13,
+    "dollars": 2566000,
+    "issue": "Training / enablement gaps",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 41,
+    "top3": [
+     [
+      "Training / enablement gaps",
+      4
+     ],
+     [
+      "Escalations stall deals",
+      3
+     ],
+     [
+      "Capability gaps at demo",
+      3
+     ]
+    ],
+    "snippet": "\u2026...materials like enablement resources, pitch decks, playbooks, content creation, webinars, landing pages, and...\u2026"
+   },
+   {
+    "firm": "Creative Planning",
+    "tier": "T2",
+    "calls": 72,
+    "deals": 4,
+    "dollars": 48000,
+    "issue": "Capability gaps at demo",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 25,
+    "top3": [
+     [
+      "Capability gaps at demo",
+      13
+     ],
+     [
+      "Escalations stall deals",
+      10
+     ],
+     [
+      "Support quality",
+      7
+     ]
+    ],
+    "snippet": "\u2026...ting invoices and payments.\",\"Subcustomer/Project Workarounds: Potential solutions for the subcustomer/project...\u2026"
+   },
+   {
+    "firm": "Warren Averett LLC",
+    "tier": "T2",
+    "calls": 46,
+    "deals": 4,
+    "dollars": 90000,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "negative",
+    "cosell": true,
+    "cosell_n": 27,
+    "top3": [
+     [
+      "Escalations stall deals",
+      4
+     ],
+     [
+      "Capability gaps at demo",
+      3
+     ],
+     [
+      "Training / enablement gaps",
+      2
+     ]
+    ],
+    "snippet": "\u2026...AM to follow up, and Kristin should use him as an escalation point for any issues, including project managemen...\u2026"
+   },
+   {
+    "firm": "Sorren, Inc",
+    "tier": "T2",
+    "calls": 113,
+    "deals": 3,
+    "dollars": 35075,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 59,
+    "top3": [
+     [
+      "Escalations stall deals",
+      7
+     ],
+     [
+      "Training / enablement gaps",
+      4
+     ],
+     [
+      "Capability gaps at demo",
+      2
+     ]
+    ],
+    "snippet": "\u2026...ssage, preventing tax filing on Monday. This is a high-priority issue requiring engineering resolution by Thursday morn...\u2026"
+   },
+   {
+    "firm": "The Bonadio Group",
+    "tier": "T2",
+    "calls": 27,
+    "deals": 3,
+    "dollars": 57000,
+    "issue": "Training / enablement gaps",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Training / enablement gaps",
+      3
+     ],
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Support quality",
+      1
+     ]
+    ],
+    "snippet": "\u2026...& Training: Training is offered through a partner playbook, 10 free \\\"real-world training\\\" licenses (expand...\u2026"
+   },
+   {
+    "firm": "Hannis T Bourgeois, LLP",
+    "tier": "T2",
+    "calls": 24,
+    "deals": 2,
+    "dollars": 15000,
+    "issue": "Implementation friction",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 8,
+    "top3": [
+     [
+      "Implementation friction",
+      2
+     ],
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Capability gaps at demo",
+      1
+     ]
+    ],
+    "snippet": "\u2026...stem by offering competitive pricing and reducing implementation costs.\",\"Sandbox Access Follow-up: Greg checks in with...\u2026"
+   },
+   {
+    "firm": "RSM US LLP - Eastern Iowa",
+    "tier": "T2",
+    "calls": 12,
+    "deals": 1,
+    "dollars": 12000,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "negative",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      2
+     ],
+     [
+      "Capability gaps at demo",
+      1
+     ]
+    ],
+    "snippet": "\u2026...offered assistance with IES client assessment and escalation of outstanding issues. [\"IAS Approval Delay:...\u2026"
+   },
+   {
+    "firm": "Forvis Mazars LLP SLC",
+    "tier": "T2",
+    "calls": 10,
+    "deals": 4,
+    "dollars": 50000,
+    "issue": "Capability gaps at demo",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 7,
+    "top3": [
+     [
+      "Capability gaps at demo",
+      1
+     ],
+     [
+      "Training / enablement gaps",
+      1
+     ],
+     [
+      "Support quality",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ey provides a direct upload link in the chat as a workaround for the non-functional resolution center.\",\"Addre...\u2026"
+   }
+  ],
+  "IAS": [
+   {
+    "firm": "Supporting Strategies",
+    "tier": "T1",
+    "calls": 3,
+    "deals": 2,
+    "dollars": 3390,
+    "issue": "General monitoring",
+    "signal": "high",
+    "sentiment": "negative",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [],
+    "snippet": ""
+   },
+   {
+    "firm": "Baker Tilly US, LLP - State College",
+    "tier": "T1",
+    "calls": 13,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Pricing structure",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Training / enablement gaps",
+      1
+     ],
+     [
+      "Comms breakdowns",
+      1
+     ]
+    ],
+    "snippet": "\u2026...S early access pricing, addressing concerns about price increase caps and renewal terms. Chet agreed to sign the o...\u2026"
+   },
+   {
+    "firm": "Eide Bailly LLP 1 - Midwest",
+    "tier": "T1",
+    "calls": 20,
+    "deals": 1,
+    "dollars": 345750,
+    "issue": "Comms breakdowns",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Comms breakdowns",
+      1
+     ]
+    ],
+    "snippet": "\u2026...e firm ID, simplifying the process and addressing email delivery issues.\",\"Intuit Accountant Suite: This is the su...\u2026"
+   },
+   {
+    "firm": "CRI Dallas Lance Rosenfield",
+    "tier": "T1",
+    "calls": 9,
+    "deals": 1,
+    "dollars": 945,
+    "issue": "General monitoring",
+    "signal": "medium",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [],
+    "snippet": ""
+   },
+   {
+    "firm": "Hill Barth King LLC",
+    "tier": "T2",
+    "calls": 12,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      2
+     ],
+     [
+      "Capability gaps at demo",
+      1
+     ],
+     [
+      "Pricing structure",
+      1
+     ]
+    ],
+    "snippet": "\u2026...e not eligible for wholesale pricing, and he will escalate the issue to the accountant services team.\",\"Cons...\u2026"
+   },
+   {
+    "firm": "Your Part-Time Controller, LLC",
+    "tier": "T2",
+    "calls": 10,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Capability gaps at demo",
+    "signal": "high",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Capability gaps at demo",
+      1
+     ],
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Support quality",
+      1
+     ]
+    ],
+    "snippet": "\u2026...mensions for data input, especially regarding the workaround coming in a couple of weeks using spreadsheet syn...\u2026"
+   },
+   {
+    "firm": "Brady, Martz & Associates, P.C.",
+    "tier": "T2",
+    "calls": 4,
+    "deals": 1,
+    "dollars": 1417500,
+    "issue": "Training / enablement gaps",
+    "signal": "medium",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Training / enablement gaps",
+      1
+     ]
+    ],
+    "snippet": "\u2026...rces like a one-pager, the \\\"Champion Accountants Playbook,\\\" and will connect with Ross Peterson, Brady Mar...\u2026"
+   },
+   {
+    "firm": "Kaufman Rossin",
+    "tier": "T2",
+    "calls": 2,
+    "deals": 1,
+    "dollars": 12000,
+    "issue": "Client perception",
+    "signal": "medium",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Client perception",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ged and three prospects, but her smaller business clients don't currently need IES.\"] [\"- Tim will coordinate...\u2026"
+   },
+   {
+    "firm": "Anders Outsourced Accounting & CFO Services",
+    "tier": "T2",
+    "calls": 1,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Escalations stall deals",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ]
+    ],
+    "snippet": "\u2026...and send the ticket number to Mick.\",\"- Mick will escalate the Bill Pay ticket once he receives the ticket n...\u2026"
+   },
+   {
+    "firm": "Archer Lewis Nexusx",
+    "tier": "T2",
+    "calls": 2,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "General monitoring",
+    "signal": "watch",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [],
+    "snippet": ""
+   },
+   {
+    "firm": "Cherry Bekaert LLP",
+    "tier": "T2",
+    "calls": 1,
+    "deals": 1,
+    "dollars": 945,
+    "issue": "General monitoring",
+    "signal": "watch",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [],
+    "snippet": ""
+   },
+   {
+    "firm": "Anderson Login",
+    "tier": "T3",
+    "calls": 10,
+    "deals": 1,
+    "dollars": 31500,
+    "issue": "Training / enablement gaps",
+    "signal": "high",
+    "sentiment": "negative",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Training / enablement gaps",
+      1
+     ]
+    ],
+    "snippet": "\u2026...e zones and agreed to a survey to assess specific training needs. [\"Dedicated Rep: A dedicated representative...\u2026"
+   },
+   {
+    "firm": "Brown Edwards LLP - Hburg11",
+    "tier": "T3",
+    "calls": 8,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      3
+     ]
+    ],
+    "snippet": "\u2026...with the custom reporting problem.\",\"- Katie will escalate the payroll issue (year-to-date payroll totals no...\u2026"
+   },
+   {
+    "firm": "Saville CPAs & Advisors, L.L.C.",
+    "tier": "T3",
+    "calls": 8,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Capability gaps at demo",
+      1
+     ],
+     [
+      "Pricing structure",
+      1
+     ]
+    ],
+    "snippet": "\u2026...contacts: herself for QBO moves, Jose for support escalation (after customer support), and Tim Mangini as the...\u2026"
+   },
+   {
+    "firm": "Armstrong, Backus & Co., L.L.P. - Clients",
+    "tier": "T3",
+    "calls": 3,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Pricing structure",
+    "signal": "high",
+    "sentiment": "negative",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Support quality",
+      1
+     ]
+    ],
+    "snippet": "\u2026...t), which is twice the QBO cost, making it likely too expensive for the non-profit churches, though Alicia will s...\u2026"
+   },
+   {
+    "firm": "Bookkeeping Express",
+    "tier": "T3",
+    "calls": 19,
+    "deals": 2,
+    "dollars": 28350,
+    "issue": "Pricing structure",
+    "signal": "medium",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Pricing structure",
+      1
+     ]
+    ],
+    "snippet": "\u2026...t year's discount expires due to past issues with price increases.\",\"Franchisor Event Partnership: Keith details B...\u2026"
+   },
+   {
+    "firm": "porte brown llc",
+    "tier": "T3",
+    "calls": 9,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Pricing structure",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Client perception",
+      1
+     ]
+    ],
+    "snippet": "\u2026...critical, with no possibility of extension.\",\"QBO Price Increases: Sarah informed Andrea about retail price increa...\u2026"
+   },
+   {
+    "firm": "bradley@cainwatters.coms company",
+    "tier": "T3",
+    "calls": 6,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Escalations stall deals",
+    "signal": "medium",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Pricing structure",
+      1
+     ]
+    ],
+    "snippet": "\u2026...otech Merchant Services Problem: Maghen details a critical issue with client Protech, where applying for merchant s...\u2026"
+   },
+   {
+    "firm": "RKL LLP",
+    "tier": "T3",
+    "calls": 5,
+    "deals": 1,
+    "dollars": 0,
+    "issue": "Escalations stall deals",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Client perception",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ering more granular client information.\",\"Session Escalation: Brandon takes an action item to contact Rael Fox...\u2026"
+   },
+   {
+    "firm": "WINDHAM BRANNON QBOA",
+    "tier": "T3",
+    "calls": 4,
+    "deals": 1,
+    "dollars": 15000,
+    "issue": "Support quality",
+    "signal": "medium",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Support quality",
+      1
+     ]
+    ],
+    "snippet": "\u2026...olidating realms, running reports, and escalating support issues, starting with the first Tuesday of November.\",\"...\u2026"
+   }
+  ],
+  "Combined": [
+   {
+    "firm": "Aprio",
+    "tier": "T1",
+    "calls": 237,
+    "deals": 22,
+    "dollars": 716000,
+    "issue": "Implementation friction",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Implementation friction",
+      17
+     ],
+     [
+      "Pricing structure",
+      10
+     ],
+     [
+      "Capability gaps at demo",
+      4
+     ]
+    ],
+    "snippet": "\u2026...iled that they chose Option 3, including a $3,500 implementation fee, and training would occur post-migration, typical...\u2026"
+   },
+   {
+    "firm": "CBIZ MHM, LLC - Accounting Services",
+    "tier": "T1",
+    "calls": 46,
+    "deals": 5,
+    "dollars": 36000,
+    "issue": "Escalations stall deals",
+    "signal": "critical",
+    "sentiment": "negative",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      4
+     ],
+     [
+      "Pricing structure",
+      2
+     ],
+     [
+      "Client perception",
+      2
+     ]
+    ],
+    "snippet": "\u2026..., including bank connection problems that are now escalated to engineering for investigation.\",\"IES Agreemen...\u2026"
+   },
+   {
+    "firm": "Baker Tilly US, LLP - State College",
+    "tier": "T1",
+    "calls": 20,
+    "deals": 4,
+    "dollars": 2242800,
+    "issue": "Pricing structure",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Pricing structure",
+      2
+     ],
+     [
+      "Training / enablement gaps",
+      1
+     ],
+     [
+      "Implementation friction",
+      1
+     ]
+    ],
+    "snippet": "\u2026...tted to only a quick glance at the bottom line.\",\"Pricing Concerns: Wendy expressed significant concern over the pr...\u2026"
+   },
+   {
+    "firm": "CitrinCooperman",
+    "tier": "T1",
+    "calls": 27,
+    "deals": 1,
+    "dollars": 12000,
+    "issue": "Escalations stall deals",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      3
+     ],
+     [
+      "Capability gaps at demo",
+      2
+     ],
+     [
+      "Pricing structure",
+      1
+     ]
+    ],
+    "snippet": "\u2026...tercompany accounting, and dynamic allocations.\",\"Escalation for UI Upgrade: Andy will escalate a support tick...\u2026"
+   },
+   {
+    "firm": "Supporting Strategies",
+    "tier": "T1",
+    "calls": 22,
+    "deals": 6,
+    "dollars": 39725,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Implementation friction",
+      1
+     ],
+     [
+      "Support quality",
+      1
+     ]
+    ],
+    "snippet": "\u2026...volved, incurring unbillable hours.\",\"Request for Escalation: Vanessa asked Scott to expedite getting her feed...\u2026"
+   },
+   {
+    "firm": "Eide Bailly LLP 1 - Midwest",
+    "tier": "T1",
+    "calls": 26,
+    "deals": 3,
+    "dollars": 375750,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Training / enablement gaps",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ounting Alliances), Lindsay Wheeler (Sales Leader/Escalation Path), Vishal Shah (IES Specialist), Camille Cons...\u2026"
+   },
+   {
+    "firm": "CRI Dallas Lance Rosenfield",
+    "tier": "T1",
+    "calls": 13,
+    "deals": 2,
+    "dollars": 30945,
+    "issue": "General monitoring",
+    "signal": "medium",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [],
+    "snippet": ""
+   },
+   {
+    "firm": "All BDO USA, LLP",
+    "tier": "T1",
+    "calls": 9,
+    "deals": 2,
+    "dollars": 12000,
+    "issue": "Escalations stall deals",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ce intercompany transactions, which Isabella will escalate.\",\"Intercompany Workflow: Isabella inquired if IE...\u2026"
+   },
+   {
+    "firm": "CLA Midwest",
+    "tier": "T1",
+    "calls": 2,
+    "deals": 1,
+    "dollars": 12000,
+    "issue": "General monitoring",
+    "signal": "medium",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [],
+    "snippet": ""
+   },
+   {
+    "firm": "Rehmann 1-QB Accountant",
+    "tier": "T2",
+    "calls": 29,
+    "deals": 4,
+    "dollars": 75120,
+    "issue": "Capability gaps at demo",
+    "signal": "critical",
+    "sentiment": "neutral",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Capability gaps at demo",
+      5
+     ],
+     [
+      "Pricing structure",
+      3
+     ],
+     [
+      "Escalations stall deals",
+      2
+     ]
+    ],
+    "snippet": "\u2026...s like advanced inventory management.\",\"Inventory Feature Gap: Simon admitted that QuickBooks Desktop Enterpris...\u2026"
+   },
+   {
+    "firm": "UHY ADVISORS",
+    "tier": "T2",
+    "calls": 48,
+    "deals": 3,
+    "dollars": 12000,
+    "issue": "Escalations stall deals",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      5
+     ],
+     [
+      "Capability gaps at demo",
+      4
+     ],
+     [
+      "Training / enablement gaps",
+      3
+     ]
+    ],
+    "snippet": "\u2026...e and will provide the case number to Brandon for escalation.\",\"QBO to QBD Conversion: Kelly inquired about co...\u2026"
+   },
+   {
+    "firm": "PKF OCONNOR DAVIES 101",
+    "tier": "T2",
+    "calls": 22,
+    "deals": 2,
+    "dollars": 990,
+    "issue": "Capability gaps at demo",
+    "signal": "critical",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Capability gaps at demo",
+      2
+     ],
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Training / enablement gaps",
+      1
+     ]
+    ],
+    "snippet": "\u2026...ging the need for evaluation before commitment.\",\"Missing Feature: Kim raises a critical concern about the absence...\u2026"
+   },
+   {
+    "firm": "Pinion LLC",
+    "tier": "T2",
+    "calls": 43,
+    "deals": 13,
+    "dollars": 2566000,
+    "issue": "Training / enablement gaps",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 41,
+    "top3": [
+     [
+      "Training / enablement gaps",
+      4
+     ],
+     [
+      "Escalations stall deals",
+      3
+     ],
+     [
+      "Capability gaps at demo",
+      3
+     ]
+    ],
+    "snippet": "\u2026...materials like enablement resources, pitch decks, playbooks, content creation, webinars, landing pages, and...\u2026"
+   },
+   {
+    "firm": "Creative Planning",
+    "tier": "T2",
+    "calls": 72,
+    "deals": 4,
+    "dollars": 48000,
+    "issue": "Capability gaps at demo",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 25,
+    "top3": [
+     [
+      "Capability gaps at demo",
+      13
+     ],
+     [
+      "Escalations stall deals",
+      10
+     ],
+     [
+      "Support quality",
+      7
+     ]
+    ],
+    "snippet": "\u2026...ting invoices and payments.\",\"Subcustomer/Project Workarounds: Potential solutions for the subcustomer/project...\u2026"
+   },
+   {
+    "firm": "Warren Averett LLC",
+    "tier": "T2",
+    "calls": 46,
+    "deals": 4,
+    "dollars": 90000,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "negative",
+    "cosell": true,
+    "cosell_n": 27,
+    "top3": [
+     [
+      "Escalations stall deals",
+      4
+     ],
+     [
+      "Capability gaps at demo",
+      3
+     ],
+     [
+      "Training / enablement gaps",
+      2
+     ]
+    ],
+    "snippet": "\u2026...AM to follow up, and Kristin should use him as an escalation point for any issues, including project managemen...\u2026"
+   },
+   {
+    "firm": "Sorren, Inc",
+    "tier": "T2",
+    "calls": 113,
+    "deals": 3,
+    "dollars": 35075,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 59,
+    "top3": [
+     [
+      "Escalations stall deals",
+      7
+     ],
+     [
+      "Training / enablement gaps",
+      4
+     ],
+     [
+      "Capability gaps at demo",
+      2
+     ]
+    ],
+    "snippet": "\u2026...ssage, preventing tax filing on Monday. This is a high-priority issue requiring engineering resolution by Thursday morn...\u2026"
+   },
+   {
+    "firm": "The Bonadio Group",
+    "tier": "T2",
+    "calls": 27,
+    "deals": 3,
+    "dollars": 57000,
+    "issue": "Training / enablement gaps",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Training / enablement gaps",
+      3
+     ],
+     [
+      "Pricing structure",
+      1
+     ],
+     [
+      "Support quality",
+      1
+     ]
+    ],
+    "snippet": "\u2026...& Training: Training is offered through a partner playbook, 10 free \\\"real-world training\\\" licenses (expand...\u2026"
+   },
+   {
+    "firm": "Your Part-Time Controller, LLC",
+    "tier": "T2",
+    "calls": 24,
+    "deals": 3,
+    "dollars": 15000,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Capability gaps at demo",
+      1
+     ],
+     [
+      "Pricing structure",
+      1
+     ]
+    ],
+    "snippet": "\u2026...here issues were not adequately addressed despite escalation.\",\"Realm Consolidation Concerns: Alicia expresses...\u2026"
+   },
+   {
+    "firm": "Hannis T Bourgeois, LLP",
+    "tier": "T2",
+    "calls": 24,
+    "deals": 2,
+    "dollars": 15000,
+    "issue": "Implementation friction",
+    "signal": "high",
+    "sentiment": "positive",
+    "cosell": true,
+    "cosell_n": 8,
+    "top3": [
+     [
+      "Implementation friction",
+      2
+     ],
+     [
+      "Escalations stall deals",
+      1
+     ],
+     [
+      "Capability gaps at demo",
+      1
+     ]
+    ],
+    "snippet": "\u2026...stem by offering competitive pricing and reducing implementation costs.\",\"Sandbox Access Follow-up: Greg checks in with...\u2026"
+   },
+   {
+    "firm": "RSM US LLP - Eastern Iowa",
+    "tier": "T2",
+    "calls": 12,
+    "deals": 1,
+    "dollars": 12000,
+    "issue": "Escalations stall deals",
+    "signal": "high",
+    "sentiment": "negative",
+    "cosell": false,
+    "cosell_n": 0,
+    "top3": [
+     [
+      "Escalations stall deals",
+      2
+     ],
+     [
+      "Capability gaps at demo",
+      1
+     ]
+    ],
+    "snippet": "\u2026...offered assistance with IES client assessment and escalation of outstanding issues. [\"IAS Approval Delay:...\u2026"
+   }
+  ]
+ }
+}

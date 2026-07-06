@@ -59,14 +59,27 @@
     <div class="kpis" id="kpis"></div>
 
     <div class="customeronly">
+      <div class="cutbar">
+        <span class="cutlab">Product view</span>
+        <button class="cuttog on" data-cut="Combined">Combined</button>
+        <button class="cuttog" data-cut="IES">IES</button>
+        <button class="cuttog" data-cut="IAS">IAS<span class="cutsub"> · QBOA proxy</span></button>
+        <span class="cutmeta" id="cutmeta"></span>
+      </div>
+
       <div class="section-tag">Top 100 losses — the takeaway</div>
       <div id="gapsSection"></div>
+
+      <div id="iesVsIas"></div>
 
       <div class="section-tag">What the firms told Intuit's CSO</div>
       <div class="card" id="eceTable"></div>
 
       <div class="section-tag">Top 100 firm watchlist</div>
       <div class="card" id="firmWatch"></div>
+
+      <div class="section-tag">Who we lose to</div>
+      <div class="card" id="competitors"></div>
 
       <div class="section-tag">What customers ask IES to do &middot; how they migrate</div>
       <div class="grid-2" id="trendingTwo"></div>
