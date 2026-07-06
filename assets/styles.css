@@ -173,6 +173,24 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .hbsc.good b{color:var(--green);}.hbsc.bad b{color:var(--red);}
 .hbsc small{display:block;font-size:.66rem;color:var(--muted);font-weight:600;}
 
+/* Top 100 gaps — hero takeaway cards */
+.gapshead{font-size:1.15rem;font-weight:800;color:var(--ink);margin:0;letter-spacing:-.01em;line-height:1.3;}
+.gapssub{font-size:.78rem;color:var(--muted);margin:4px 0 14px;}
+.gapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:900px){.gapgrid{grid-template-columns:1fr;}}
+.gapcard{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--neutral);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 17px;}
+.gapcard.critical{border-top-color:var(--red);}.gapcard.high{border-top-color:var(--amber);}.gapcard.medium{border-top-color:var(--brand);}
+.gaptop{display:flex;justify-content:space-between;align-items:center;}
+.gapnum{width:24px;height:24px;border-radius:7px;background:var(--brand-deep);color:#fff;font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
+.gapstat{font-size:.82rem;font-weight:800;color:var(--ink-soft);}
+.gaptitle{font-size:1.02rem;font-weight:800;margin:11px 0 7px;line-height:1.25;color:var(--ink);}
+.gapsowhat{font-size:.86rem;color:var(--ink-soft);line-height:1.5;margin:0 0 12px;}
+.gapmore{appearance:none;border:0;background:transparent;color:var(--brand);font-weight:700;font-size:.8rem;cursor:pointer;padding:0;}
+.gapmore:hover{text-decoration:underline;}
+.gapdetail{display:none;margin-top:11px;padding-top:11px;border-top:1px dashed var(--line-strong);}
+.gapdetail.show{display:block;}
+.gapdetail blockquote{margin:8px 0 4px;font-size:.85rem;font-style:italic;color:var(--ink);}
+
 /* friction table */
 .sigtoggles{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .sigtoglab{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px;}

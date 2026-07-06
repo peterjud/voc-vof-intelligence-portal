@@ -83,10 +83,9 @@ function mode(arr){var m={},best="—",bc=0;arr.forEach(function(x){if(!x)return
 // Top 100 / Customer lanes: deck-accurate program metrics (SLRN-425)
 var KPIS_TOP100=[
  {sentiment:"neutral",seg:"Top 100 · Gong",label:"Calls analyzed",value:"1,243",sub:"60 of 77 T100 firms · V1 directional read"},
- {sentiment:"amber",seg:"Top 100 · losses",label:"3 execution gaps",value:"82%",sub:"of churn-signal calls"},
- {sentiment:"red",seg:"#1 gap",label:"Escalations stall deals",value:"33%",sub:"60 calls · % of churn-signal calls"},
- {sentiment:"red",seg:"#2 gap",label:"Capability gaps at demo",value:"28%",sub:"52 calls · % of churn-signal calls"},
- {sentiment:"amber",seg:"#3 gap",label:"Pricing — structure",value:"21%",sub:"39 calls · % of churn-signal calls"}
+ {sentiment:"neutral",seg:"Firm-level read",label:"Diamond firms · 10+ calls",value:"7 of 9",sub:"where the firm-level read lives"},
+ {sentiment:"amber",seg:"Top 100 · losses",label:"Explained by 3 gaps",value:"82%",sub:"escalations · demo fit · pricing (below)"},
+ {sentiment:"neutral",seg:"Top 100 · pipeline",label:"Closed-lost opps",value:"278",sub:"in the rolling 12-mo window"}
 ];
 function kpiTile(k){return '<div class="kpi '+k.sentiment+'"><div class="seg">'+esc(k.seg)+'</div><div class="lab">'+esc(k.label)+'</div><div class="v num">'+esc(k.value)+'</div><div class="sub">'+esc(k.sub)+'</div></div>';}
 function renderKPIs(F){
@@ -225,6 +224,31 @@ function renderFirmWatch(){
     function toggle(){var d=document.getElementById(tr.dataset.d);if(d){tr.classList.toggle("open",d.classList.toggle("show"));}}
     tr.addEventListener("click",toggle);
     tr.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+  });
+}
+
+/* ---------- Top 100 gaps: the takeaway (hero cards) ---------- */
+function renderGaps(){
+  var G=D.top100churn; if(!G){return;}
+  var cards=G.rows.map(function(r,i){
+    var bullets=(r.bullets||[]).map(function(b){return '<li>'+esc(b)+'</li>';}).join("");
+    var did="gap-"+r.rank;
+    return '<div class="gapcard '+r.signal+'">'+
+      '<div class="gaptop"><span class="gapnum">'+(i+1)+'</span><span class="gapstat num">'+esc(r.metric)+'</span></div>'+
+      '<h3 class="gaptitle">'+esc(r.title)+'</h3>'+
+      '<p class="gapsowhat">'+esc(r.sowhat||"")+'</p>'+
+      '<button class="gapmore" data-g="'+did+'">Why &amp; who ›</button>'+
+      '<div class="gapdetail" id="'+did+'">'+
+        (bullets?'<ul class="fbullets">'+bullets+'</ul>':'')+
+        (r.verbatim?'<blockquote>“'+esc(r.verbatim)+'”</blockquote><span class="who">'+esc(r.who||"")+'</span>':'')+
+        (r.keyfirms?'<div class="kvline"><span class="lab">Key firms</span> '+esc(r.keyfirms)+'</div>':'')+
+        (r.aisignal?'<div class="kvline"><span class="lab">AI signal</span> '+esc(r.aisignal)+'</div>':'')+
+      '</div></div>';
+  }).join("");
+  $("#gapsSection").innerHTML='<div class="gapshead">'+esc(G.headline)+'</div><p class="gapssub">'+esc(G.sub)+'</p>'+
+    '<div class="gapgrid">'+cards+'</div>'+(G.caveat?'<div class="fnote" style="margin-top:14px">'+esc(G.caveat)+'</div>':'');
+  Array.prototype.slice.call(document.querySelectorAll("#gapsSection .gapmore")).forEach(function(b){
+    b.addEventListener("click",function(){var d=document.getElementById(b.dataset.g);var open=d.classList.toggle("show");b.innerHTML=open?"Hide ‹":"Why &amp; who ›";});
   });
 }
 
@@ -411,7 +435,7 @@ function render(){
   $("#scorecardSec").classList.toggle("hidden", state.lane!=="all"); // program rollup only on the All view
   var filtered = D.signals.filter(matches);
   renderScorecard();renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
-  renderFirmWatch();renderInsightTable("#churnTable",D.top100churn);renderInsightTable("#eceTable",D.eceThemes);
+  renderGaps();renderInsightTable("#eceTable",D.eceThemes);renderFirmWatch();
   renderTrendingTwo();renderCoverage();renderFriction();
   renderWordcloud(filtered);
   renderSummary(filtered);
