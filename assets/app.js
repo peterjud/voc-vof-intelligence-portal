@@ -20,6 +20,7 @@ var state = {lane:"all", segment:"", product:"", source:"", theme:"", sentiment:
 var frictionFilter = {critical:true, high:true, medium:true};
 var firmFilter = "all";
 var v2cut = "Combined"; // Top 100 product view: Combined / IES / IAS
+var dataLens = "loss"; // Customer views data lens: loss (closed-lost Gong) / ece (ECE AI-demand) / both
 function fmtM(n){n=+n||0; if(n>=1e6){var m=(n/1e6); return (m>=10?m.toFixed(1):m.toFixed(2)).replace(/\.?0+$/,'')+"M";} if(n>=1e3) return Math.round(n/1e3)+"K"; return String(Math.round(n));}
 function cleanFirm(n){var m=String(n).split(",")[0].replace(/\s+\d+\b.*$/,"").replace(/\s+-\s+.*$/,"").trim(); return m||n;}
 
@@ -76,6 +77,72 @@ function renderCutbar(){
   Array.prototype.slice.call(document.querySelectorAll(".cuttog")).forEach(function(b){b.classList.toggle("on",b.dataset.cut===v2cut);});
   var c=D.v2.cuts[v2cut];
   $("#cutmeta").innerHTML=c.calls.toLocaleString()+" calls · "+c.firms+" firms · "+c.deals+" lost deals · $"+fmtM(c.dollars)+" closed-lost";
+}
+
+/* ---------- Data lens (Closed-lost / ECE AI-demand / Both) ---------- */
+Array.prototype.slice.call(document.querySelectorAll(".lenstog")).forEach(function(b){
+  b.addEventListener("click",function(){dataLens=b.dataset.lens;render();});
+});
+function renderEcePanel(){
+  var box=$("#ecePanel"); if(!box) return;
+  if(dataLens==="loss"){box.innerHTML="";return;}
+  var E=D.eceWave2, SIG={critical:"Critical",high:"High",medium:"Medium"};
+  // headline
+  var head='<div class="section-tag">ECE — Agent Studio / AI demand · '+esc(E.meta.window)+'</div>'+
+    '<div class="card ecehead"><div class="ecebig">21<span>/21 firms</span></div>'+
+    '<div class="ecehead-t"><h2 class="h">'+esc(E.meta.headline)+'</h2>'+
+    '<p class="h-sub">'+E.meta.calls+' executive engagements · '+E.meta.firms+' firms · '+esc(E.meta.note)+'</p></div></div>';
+  // watchlist
+  var wl=E.watchlist.map(function(r){
+    var sent=r.sentiment==="positive"?"green":r.sentiment==="negative"?"red":"neutral";
+    return '<tr class="frow"><td><div class="fwfirm">'+esc(r.firm)+'</div><div class="fwsub">'+esc(r.product)+'</div></td>'+
+      '<td><span class="sigbadge '+r.signal+'">'+SIG[r.signal]+'</span></td>'+
+      '<td class="num">'+r.calls+'</td><td class="fwissue">'+esc(r.concern)+'</td>'+
+      '<td><span class="tag '+sent+'">'+esc(r.sentiment)+'</span></td></tr>';
+  }).join("");
+  var watch='<div class="section-tag">ECE firm watchlist ('+E.watchlist.length+' firms)</div>'+
+    '<div class="card"><div class="chart-head"><div><h2 class="h">Every firm is pulling on Agent Studio</h2>'+
+    '<p class="h-sub">Highest signal per firm · leading concern beyond the AI demand · demo & relationship calls</p></div></div>'+
+    '<div class="tablewrap"><table class="ftable"><thead><tr><th>Firm</th><th>Signal</th><th class="num">Calls</th><th>Leading concern</th><th>Sentiment</th></tr></thead><tbody>'+wl+'</tbody></table></div>'+
+    '<div class="fnote">Signal = how forcefully AI/readiness came up. These are exec/demo calls — no closed-lost $. Two Critical: BDO (Intuit competing via QuickBooks Live) and Forvis (“not ready for prime time”).</div></div>';
+  // friction themes by firms
+  var fr=E.friction.filter(function(t){return t.kind==="friction";});
+  var fmax=Math.max.apply(null,fr.map(function(t){return t.firms;}))||1;
+  var frows=fr.map(function(t,i){
+    return '<div class="trank"><div class="rk">'+(i+1)+'</div><div class="tt">'+esc(t.theme)+(t.isNew?' <span class="newtag">NEW</span>':'')+'</div>'+
+      '<div class="meter"><i class="fill-brand" style="width:'+(100*t.firms/fmax)+'%"></i></div>'+
+      '<div class="vv num">'+t.firms+' firms</div></div>';
+  }).join("");
+  var friction='<div class="section-tag">What’s gating the demand — friction themes by firms</div>'+
+    '<div class="card"><p class="h-sub" style="margin:0 0 8px">Distinct firms (of '+E.meta.firms+') that raised each · Agent Studio demand itself is universal (21/21)</p>'+frows+'</div>';
+  // competitors
+  var crows=E.competitors.map(function(x){
+    var flag=x.type==="AI-automation"?' <span class="whale">watch</span>':(x.type==="Intuit’s own"?' <span class="cosellflag">internal</span>':'');
+    return '<tr><td><div class="fwfirm">'+esc(x.name)+flag+'</div><div class="fwsub">'+esc(x.type)+'</div></td>'+
+      '<td class="num">'+x.calls+'</td><td class="num">'+x.firms+'</td><td class="fwissue">'+esc(x.note)+'</td></tr>';
+  }).join("");
+  var comps='<div class="section-tag">Who we lose to — competitors named</div>'+
+    '<div class="card"><div class="tablewrap"><table class="ftable"><thead><tr><th>Competitor</th><th class="num">Calls</th><th class="num">Firms</th><th>Context</th></tr></thead><tbody>'+crows+'</tbody></table></div>'+
+    '<div class="fnote"><b>No competitor is tied to a stated closed-lost deal in this wave</b> (these are demo calls). BASIS is the one to watch — named in 16 calls, and Eisner + Anders have committed to it over Intuit’s AI.</div></div>';
+  // capability + migration (two cards)
+  var capmax=Math.max.apply(null,E.capability.map(function(r){return r.calls;}))||1;
+  var caprows=E.capability.map(function(r,i){
+    return '<div class="trank"><div class="rk">'+(i+1)+'</div><div class="tt">'+esc(r.ask)+'</div>'+
+      '<div class="meter"><i class="fill-brand" style="width:'+(100*r.calls/capmax)+'%"></i></div>'+
+      '<div class="vv num">'+r.calls+' · '+r.pct+'%</div></div>';
+  }).join("");
+  var migmax=Math.max.apply(null,E.migration.map(function(r){return r.calls;}))||1;
+  var migrows=E.migration.map(function(r,i){
+    return '<div class="trank"><div class="rk">'+(i+1)+'</div><div class="tt">'+esc(r.path)+'</div>'+
+      '<div class="meter"><i class="fill-brand" style="width:'+(100*r.calls/migmax)+'%"></i></div>'+
+      '<div class="vv num">'+r.calls+' · '+r.pct+'%</div></div>';
+  }).join("");
+  var twoup='<div class="section-tag">What customers ask AI to do &middot; how they migrate</div>'+
+    '<div class="grid-2"><div class="card"><h2 class="h" style="font-size:.95rem">What customers ask AI/Agent Studio to do</h2>'+
+    '<p class="h-sub">ECE · capability demand · % of '+E.meta.substantive+' substantive calls</p><div style="margin-top:8px">'+caprows+'</div></div>'+
+    '<div class="card"><h2 class="h" style="font-size:.95rem">Migration paths mentioned</h2>'+
+    '<p class="h-sub">ECE · % of '+E.meta.substantive+' calls · thin by nature (demo calls)</p><div style="margin-top:8px">'+migrows+'</div></div></div>';
+  box.innerHTML=head+watch+friction+comps+twoup;
 }
 function kpisTop100(){
   var c=D.v2.cuts[v2cut], cov=c.deals?Math.round(100*c.dollars_cov/c.deals):0, d0=c.churn[0];
@@ -137,8 +204,18 @@ var KPIS_TOP100=[
  {sentiment:"neutral",seg:"Top 100 · pipeline",label:"Closed-lost opps",value:"278",sub:"in the rolling 12-mo window"}
 ];
 function kpiTile(k){return '<div class="kpi '+k.sentiment+'"><div class="seg">'+esc(k.seg)+'</div><div class="lab">'+esc(k.label)+'</div><div class="v num">'+esc(k.value)+'</div><div class="sub">'+esc(k.sub)+'</div></div>';}
+function kpisEce(){
+  var E=D.eceWave2, top=E.capability[0], comp=E.competitors[0];
+  return [
+   {sentiment:"neutral",seg:"ECE · May–Jul 2026",label:"Exec engagements",value:String(E.meta.calls),sub:E.meta.firms+" firms · demo & relationship calls"},
+   {sentiment:"green",seg:"Demand",label:"Agent Studio / AI",value:"21/21",sub:"firms · universal demand"},
+   {sentiment:"red",seg:"Competitor to watch",label:comp.name,value:comp.calls+" calls",sub:comp.firms+" firms · Eisner + Anders committed"},
+   {sentiment:"amber",seg:"Top ask",label:top.ask,value:top.pct+"%",sub:top.calls+" of "+E.meta.substantive+" calls"},
+   {sentiment:"red",seg:"Critical signal",label:"Firms flagged",value:"2",sub:"Forvis (not ready) · BDO (Intuit competing)"}
+  ];
+}
 function renderKPIs(F){
-  if(state.lane==="top100"||state.lane==="customer"){$("#kpis").innerHTML=kpisTop100().map(kpiTile).join("");return;}
+  if(state.lane==="top100"||state.lane==="customer"){$("#kpis").innerHTML=(dataLens==="ece"?kpisEce():kpisTop100()).map(kpiTile).join("");return;}
   var red=0,green=0,amber=0;
   F.forEach(function(s){if(s.sentiment==="red")red++;else if(s.sentiment==="green")green++;else if(s.sentiment==="amber")amber++;});
   var n=F.length||1, SRCL={"derived/analysis":"Analysis"};
@@ -481,13 +558,18 @@ function render(){
   var hideCustomer = (state.lane==="field");
   Array.prototype.slice.call(document.querySelectorAll(".fieldonly")).forEach(function(el){el.classList.toggle("hidden",hideField);});
   Array.prototype.slice.call(document.querySelectorAll(".customeronly")).forEach(function(el){el.classList.toggle("hidden",hideCustomer);});
+  // data lens: closed-lost (Gong) vs ECE AI-demand vs both — reshapes the customer views
+  Array.prototype.slice.call(document.querySelectorAll(".lenstog")).forEach(function(b){b.classList.toggle("on",b.dataset.lens===dataLens);});
+  Array.prototype.slice.call(document.querySelectorAll(".lossonly")).forEach(function(el){el.classList.toggle("hidden",dataLens==="ece");});
+  Array.prototype.slice.call(document.querySelectorAll(".eceonly")).forEach(function(el){el.classList.toggle("hidden",dataLens==="loss");});
+  var lm=$("#lensmeta"); if(lm){lm.innerHTML = dataLens==="loss"?"closed-lost Gong · 105 firms · $9.5M" : (dataLens==="ece"?"ECE demo calls · 21 firms · AI / Agent Studio" : "both sources shown");}
   // source filter reshapes the field panels: TIM section shows for TIM, Heartbeat section for Heartbeat
   Array.prototype.slice.call(document.querySelectorAll(".srcsec")).forEach(function(el){el.classList.toggle("hidden", !(state.source===""||state.source===el.dataset.src));});
   $("#scorecardSec").classList.toggle("hidden", state.lane!=="all"); // program rollup only on the All view
   var filtered = D.signals.filter(matches);
   renderScorecard();renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
   renderCutbar();renderGaps();renderIesVsIas();renderInsightTable("#eceTable",D.eceThemes);renderFirmWatch();renderCompetitors();
-  renderTrendingTwo();renderCoverage();renderFriction();
+  renderTrendingTwo();renderCoverage();renderFriction();renderEcePanel();
   renderWordcloud(filtered);
   renderSummary(filtered);
   renderVerbatims(filtered);

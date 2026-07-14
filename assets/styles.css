@@ -181,6 +181,16 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .cuttog .cutsub{font-weight:500;opacity:.7;font-size:.72rem;}
 .cutmeta{margin-left:auto;font-size:.76rem;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
 @media(max-width:760px){.cutmeta{margin-left:0;width:100%;}}
+/* data lens (source: closed-lost vs ECE AI-demand) */
+.datalens{border-left:4px solid var(--brand-deep);background:linear-gradient(90deg,rgba(0,119,197,.05),var(--surface) 60%);}
+.lenstog{appearance:none;border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;padding:6px 15px;font-size:.83rem;font-weight:700;cursor:pointer;color:var(--ink-soft);}
+.lenstog.on{background:var(--brand-deep);border-color:var(--brand-deep);color:#fff;}
+.ecehead{display:flex;align-items:center;gap:20px;}
+.ecebig{font-size:2.6rem;font-weight:800;line-height:1;color:var(--brand-deep);letter-spacing:-.02em;flex:none;}
+.ecebig span{font-size:.9rem;font-weight:700;color:var(--muted);margin-left:2px;}
+.ecehead-t .h{margin:0;}
+.newtag{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.06em;background:#b8620a;color:#fff;border-radius:4px;padding:1px 5px;vertical-align:middle;margin-left:4px;}
+@media(max-width:620px){.ecehead{flex-direction:column;align-items:flex-start;gap:10px;}}
 /* IES vs IAS comparison */
 .ivgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:760px){.ivgrid{grid-template-columns:1fr;}}
