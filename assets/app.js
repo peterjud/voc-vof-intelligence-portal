@@ -27,7 +27,7 @@ function cleanFirm(n){var m=String(n).split(",")[0].replace(/\s+\d+\b.*$/,"").re
 /* ---------- header ---------- */
 $("#updated").textContent = "Updated "+fmtDate(D.meta.updated);
 $("#scope").textContent = (D.meta.confidential?"Confidential · ":"")+D.meta.scope;
-$("#foot").innerHTML = "Intuit Commercial Sales · Voice of Customer / Voice of Field · "+D.meta.n_signals+" classified signals across "+D.meta.n_sources+" sources · Confidential — for internal use only.";
+$("#foot").innerHTML = "Intuit Commercial Sales · Voice of Customer / Voice of Field · "+D.meta.n_signals+" classified signals · source pipeline health on the Sources tab · Confidential — for internal use only.";
 
 /* ---------- filters ---------- */
 function opt(v,label){return '<option value="'+esc(v)+'">'+esc(label)+'</option>';}
@@ -619,7 +619,7 @@ function render(){
   var filtered = D.signals.filter(matches);
   renderScorecard();renderThemes();renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
   renderCutbar();renderGaps();renderIesVsIas();renderInsightTable("#eceTable",D.eceThemes);renderFirmWatch();renderCompetitors();
-  renderTrendingTwo();renderCoverage();renderFriction();renderEcePanel();
+  renderTrendingTwo();renderFriction();renderEcePanel();
   renderWordcloud(filtered);
   renderSummary(filtered);
   renderVerbatims(filtered);
