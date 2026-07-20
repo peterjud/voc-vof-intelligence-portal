@@ -191,6 +191,29 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .ecehead-t .h{margin:0;}
 .newtag{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.06em;background:#b8620a;color:#fff;border-radius:4px;padding:1px 5px;vertical-align:middle;margin-left:4px;}
 @media(max-width:620px){.ecehead{flex-direction:column;align-items:flex-start;gap:10px;}}
+/* Sources / signal coverage tab */
+.srchealth{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:2px 0 18px;}
+.shpill{display:flex;align-items:center;gap:7px;font-size:.9rem;color:var(--ink-soft);background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;padding:6px 14px;box-shadow:var(--shadow-sm);}
+.shpill b{color:var(--ink);font-size:1.05rem;}
+.shmeta{font-size:.78rem;color:var(--muted);flex:1;min-width:240px;}
+.sdot{width:11px;height:11px;border-radius:50%;flex:none;display:inline-block;}
+.sdot.green{background:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.15);}
+.sdot.yellow{background:#d99109;box-shadow:0 0 0 3px rgba(217,145,9,.15);}
+.sdot.red{background:#c0392b;box-shadow:0 0 0 3px rgba(192,57,43,.15);}
+.srcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.srccard{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--line-strong);border-radius:12px;padding:16px 18px 14px;box-shadow:var(--shadow-sm);}
+.srccard.green{border-left-color:#16a34a;}
+.srccard.yellow{border-left-color:#d99109;}
+.srccard.red{border-left-color:#c0392b;}
+.srctop{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.srcstat{font-size:.66rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;}
+.srcstat.green{color:#16a34a;} .srcstat.yellow{color:#b8620a;} .srcstat.red{color:#c0392b;}
+.srcname{font-size:1.02rem;font-weight:800;color:var(--ink);line-height:1.15;}
+.srcvol{font-size:.9rem;color:var(--brand-deep);font-weight:700;margin:6px 0 12px;font-variant-numeric:tabular-nums;}
+.srckv{display:flex;justify-content:space-between;gap:10px;font-size:.82rem;padding:5px 0;border-top:1px solid var(--line);}
+.srckv span{color:var(--muted);} .srckv b{color:var(--ink);font-weight:700;text-align:right;}
+.srcnote{margin-top:10px;font-size:.76rem;color:var(--muted);line-height:1.4;font-style:italic;}
+.srcfoot{margin-top:18px;font-size:.8rem;color:var(--muted);line-height:1.5;}
 /* IES vs IAS comparison */
 .ivgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:760px){.ivgrid{grid-template-columns:1fr;}}

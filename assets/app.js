@@ -58,7 +58,7 @@ $("#reset").addEventListener("click",function(){
 });
 
 /* ---------- tabs ---------- */
-var VALID_LANES=["all","top100","customer","field","partners","investors"];
+var VALID_LANES=["all","top100","customer","field","sources","partners","investors"];
 function selectLane(lane){
   if(VALID_LANES.indexOf(lane)<0) lane="all";
   document.querySelectorAll(".tab").forEach(function(x){x.setAttribute("aria-selected", x.dataset.lane===lane?"true":"false");});
@@ -543,8 +543,42 @@ function clearFilter(key){
 }
 function scrollResults(){var v=$("#verbatims");if(!v)return;window.scrollTo({top:v.getBoundingClientRect().top+window.pageYOffset-80,behavior:"smooth"});}
 
+/* ---------- Sources / signal-coverage tab ---------- */
+function renderSources(){
+  var S=D.sources; if(!S) return;
+  var LB={green:"Live",yellow:"Partial",red:"Pending"};
+  var g=S.rows.filter(function(r){return r.status==="green";}).length,
+      y=S.rows.filter(function(r){return r.status==="yellow";}).length,
+      r=S.rows.filter(function(r){return r.status==="red";}).length;
+  $("#sourcesHealth").innerHTML=
+    '<div class="shpill"><span class="sdot green"></span><b>'+g+'</b> live</div>'+
+    '<div class="shpill"><span class="sdot yellow"></span><b>'+y+'</b> partial</div>'+
+    '<div class="shpill"><span class="sdot red"></span><b>'+r+'</b> pending</div>'+
+    '<div class="shmeta">'+S.rows.length+' sources feeding the engine · the daily-automation goal is the gap between green and the rest</div>';
+  $("#sourcesGrid").innerHTML=S.rows.map(function(x){
+    return '<div class="srccard '+x.status+'">'+
+      '<div class="srctop"><span class="sdot '+x.status+'"></span><span class="srcstat '+x.status+'">'+LB[x.status]+'</span></div>'+
+      '<div class="srcname">'+esc(x.name)+'</div>'+
+      '<div class="srcvol">'+esc(x.volume)+'</div>'+
+      '<div class="srckv"><span>Frequency</span><b>'+esc(x.freq)+'</b></div>'+
+      '<div class="srckv"><span>Last pull</span><b>'+esc(x.last)+'</b></div>'+
+      '<div class="srcnote">'+esc(x.note)+'</div></div>';
+  }).join("");
+  $("#sourcesFoot").innerHTML="Live = flowing and current · Partial = loaded but stale or manual · Pending = not yet connected. "+
+    "Next: automate the Gong daily feed, stand up Pulse, and fold Cresta in.";
+}
+
 /* ---------- master render ---------- */
 function render(){
+  var isSources = state.lane==="sources";
+  $("#lane-sources").classList.toggle("hidden",!isSources);
+  document.querySelector(".filterbar").classList.toggle("hidden",isSources);
+  if(isSources){
+    $("#lane-data").classList.add("hidden");
+    $("#lane-empty").classList.add("hidden");
+    renderSources();
+    return;
+  }
   var empty = state.lane==="partners"||state.lane==="investors";
   $("#lane-data").classList.toggle("hidden",empty);
   $("#lane-empty").classList.toggle("hidden",!empty);

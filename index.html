@@ -27,6 +27,7 @@
       <button class="tab tab-feature" data-lane="top100" role="tab" aria-selected="false"><span class="hot"></span>Top 100 Firms</button>
       <button class="tab" data-lane="customer" role="tab" aria-selected="false">Customer</button>
       <button class="tab" data-lane="field" role="tab" aria-selected="false">Field</button>
+      <button class="tab" data-lane="sources" role="tab" aria-selected="false">Sources</button>
       <button class="tab" data-lane="partners" role="tab" aria-selected="false">Partners<span class="soon">soon</span></button>
       <button class="tab" data-lane="investors" role="tab" aria-selected="false">Investors<span class="soon">soon</span></button>
     </nav>
@@ -125,6 +126,14 @@
 
     <div class="section-tag">Source coverage</div>
     <div class="card" id="coverage"></div>
+  </div>
+
+  <!-- Sources / signal-coverage lane -->
+  <div id="lane-sources" class="hidden">
+    <div class="section-tag">Signal coverage — how the VOC / VOF engine is fed</div>
+    <div class="srchealth" id="sourcesHealth"></div>
+    <div class="srcgrid" id="sourcesGrid"></div>
+    <p class="srcfoot" id="sourcesFoot"></p>
   </div>
 
   <!-- Empty lanes -->
