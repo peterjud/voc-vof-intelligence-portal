@@ -543,6 +543,21 @@ function clearFilter(key){
 }
 function scrollResults(){var v=$("#verbatims");if(!v)return;window.scrollTo({top:v.getBoundingClientRect().top+window.pageYOffset-80,behavior:"smooth"});}
 
+/* ---------- Themes overview (the 5 questions) ---------- */
+function renderThemes(){
+  var T=D.themes; if(!T) return;
+  var SL={watch:"Watch",gap:"Data gap","on-track":"On track"};
+  $("#themes").innerHTML=T.rows.map(function(r){
+    return '<div class="themecard '+r.status+'">'+
+      '<div class="themetop"><span class="themenum">'+r.n+'</span><span class="themestat '+r.status+'">'+SL[r.status]+'</span></div>'+
+      '<h3 class="themename">'+esc(r.name)+'</h3>'+
+      '<p class="themeq">'+esc(r.q)+'</p>'+
+      '<div class="themeans"><div class="themebig">'+esc(r.stat)+'</div><div class="themebiglab">'+esc(r.statlab)+'</div></div>'+
+      '<p class="themebody">'+esc(r.answer)+'</p>'+
+      '<div class="themesrc">'+esc(r.sources)+'</div></div>';
+  }).join("");
+}
+
 /* ---------- Sources / signal-coverage tab ---------- */
 function renderSources(){
   var S=D.sources; if(!S) return;
@@ -600,8 +615,9 @@ function render(){
   // source filter reshapes the field panels: TIM section shows for TIM, Heartbeat section for Heartbeat
   Array.prototype.slice.call(document.querySelectorAll(".srcsec")).forEach(function(el){el.classList.toggle("hidden", !(state.source===""||state.source===el.dataset.src));});
   $("#scorecardSec").classList.toggle("hidden", state.lane!=="all"); // program rollup only on the All view
+  $("#themesSec").classList.toggle("hidden", state.lane!=="all"); // themes overview only on the All view
   var filtered = D.signals.filter(matches);
-  renderScorecard();renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
+  renderScorecard();renderThemes();renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
   renderCutbar();renderGaps();renderIesVsIas();renderInsightTable("#eceTable",D.eceThemes);renderFirmWatch();renderCompetitors();
   renderTrendingTwo();renderCoverage();renderFriction();renderEcePanel();
   renderWordcloud(filtered);

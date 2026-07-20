@@ -214,6 +214,21 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .srckv span{color:var(--muted);} .srckv b{color:var(--ink);font-weight:700;text-align:right;}
 .srcnote{margin-top:10px;font-size:.76rem;color:var(--muted);line-height:1.4;font-style:italic;}
 .srcfoot{margin-top:18px;font-size:.8rem;color:var(--muted);line-height:1.5;}
+/* Themes overview (5 questions) */
+.themegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;}
+.themecard{background:var(--surface);border:1px solid var(--line-strong);border-top:4px solid var(--brand-deep);border-radius:12px;padding:16px 18px 14px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;}
+.themecard.watch{border-top-color:#d99109;} .themecard.gap{border-top-color:#c0392b;} .themecard.on-track{border-top-color:#16a34a;}
+.themetop{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.themenum{width:26px;height:26px;border-radius:50%;background:var(--brand-deep);color:#fff;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.themestat{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;}
+.themestat.watch{background:#fdf3e7;color:#b8620a;} .themestat.gap{background:#fdeeec;color:#c0392b;} .themestat.on-track{background:#eaf6ee;color:#16a34a;}
+.themename{font-size:1.02rem;font-weight:800;color:var(--navy,#17304f);margin:0 0 4px;line-height:1.15;}
+.themeq{font-size:.82rem;color:var(--muted);font-style:italic;margin:0 0 10px;line-height:1.4;}
+.themeans{display:flex;align-items:baseline;gap:8px;padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.themebig{font-size:1.5rem;font-weight:800;color:var(--brand-deep);letter-spacing:-.01em;line-height:1;}
+.themebiglab{font-size:.76rem;color:var(--ink-soft);font-weight:600;}
+.themebody{font-size:.84rem;color:var(--ink);line-height:1.48;margin:10px 0;flex:1;}
+.themesrc{font-size:.72rem;color:var(--muted);font-weight:600;border-top:1px dashed var(--line);padding-top:8px;}
 /* IES vs IAS comparison */
 .ivgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:760px){.ivgrid{grid-template-columns:1fr;}}
