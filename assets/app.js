@@ -197,12 +197,6 @@ function renderScorecard(){
 var BASELINE = D.signals.filter(function(s){return !s.commentary;}).length;
 function mode(arr){var m={},best="—",bc=0;arr.forEach(function(x){if(!x)return;m[x]=(m[x]||0)+1;if(m[x]>bc){bc=m[x];best=x;}});return {key:best,count:bc};}
 // Top 100 / Customer lanes: deck-accurate program metrics (SLRN-425)
-var KPIS_TOP100=[
- {sentiment:"neutral",seg:"Top 100 · Gong",label:"Calls analyzed",value:"1,243",sub:"60 of 77 T100 firms · V1 directional read"},
- {sentiment:"neutral",seg:"Firm-level read",label:"Diamond firms · 10+ calls",value:"7 of 9",sub:"where the firm-level read lives"},
- {sentiment:"amber",seg:"Top 100 · losses",label:"Explained by 3 gaps",value:"82%",sub:"escalations · demo fit · pricing (below)"},
- {sentiment:"neutral",seg:"Top 100 · pipeline",label:"Closed-lost opps",value:"278",sub:"in the rolling 12-mo window"}
-];
 function kpiTile(k){return '<div class="kpi '+k.sentiment+'"><div class="seg">'+esc(k.seg)+'</div><div class="lab">'+esc(k.label)+'</div><div class="v num">'+esc(k.value)+'</div><div class="sub">'+esc(k.sub)+'</div></div>';}
 function kpisEce(){
   var E=D.eceWave2, top=E.capability[0], comp=E.competitors[0];
@@ -342,7 +336,7 @@ function renderFirmWatch(){
   }).join("");
   var cov=c.deals?Math.round(100*c.dollars_cov/c.deals):0;
   $("#firmWatch").innerHTML=
-   '<div class="chart-head"><div><h2 class="h">Top 100 firm watchlist — '+v2cut+'</h2><p class="h-sub">'+c.firms+' firms · sorted by tier then signal · calls include co-sell/coaching, read deals too</p></div>'+
+   '<div class="chart-head"><div><h2 class="h">Top 100 firm watchlist — '+v2cut+'</h2><p class="h-sub">'+c.firms+' firms in corpus · top by tier then signal shown · calls include co-sell/coaching, read deals too</p></div>'+
    '<div class="fwtoggles"><button class="fwtog'+(firmFilter==="all"?" on":"")+'" data-ff="all">All firms</button>'+
    '<button class="fwtog'+(firmFilter==="high"?" on":"")+'" data-ff="high">High signal</button></div></div>'+
    '<div class="tablewrap"><table class="ftable"><thead><tr><th>Firm</th><th>Signal</th><th class="num">Calls</th><th class="num">Deals</th><th class="num">$ lost</th><th>Top issue</th><th>Sentiment</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
@@ -413,14 +407,6 @@ function renderInsightTable(sel, cfg){
 }
 
 /* ---------- coverage ---------- */
-function renderCoverage(){
-  var rows=D.coverage.map(function(c){
-    return '<tr><td><b>'+esc(c.src)+'</b></td><td class="num">'+esc(c.vol)+'</td><td>'+esc(c.reach)+'</td><td><span class="status '+c.status+'">'+esc(c.status)+'</span></td></tr>';
-  }).join("");
-  $("#coverage").innerHTML='<div class="chart-head"><div><h2 class="h">Where the signal comes from</h2><p class="h-sub">Breadth of source = confidence in the findings</p></div></div>'+
-    '<table class="covtable"><thead><tr><th>Source</th><th>Volume</th><th>Reach</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>';
-}
-
 /* ---------- verbatims (filtered) ---------- */
 function matches(s){
   if(s.commentary) return false;
@@ -500,7 +486,7 @@ function renderFriction(){
   }).join("");
   var toggles=["critical","high","medium"].map(function(s){return '<button class="sigtoggle '+s+(frictionFilter[s]?" on":"")+'" data-sig="'+s+'">'+SIG[s]+'</button>';}).join("");
   $("#friction").innerHTML=
-    '<div class="chart-head"><div><h2 class="h">Top customer friction points</h2><p class="h-sub">Gong call analytics across Top 30–100 firm conversations · signal strength = firm-citation breadth × deal-blocker weight</p></div>'+
+    '<div class="chart-head"><div><h2 class="h">Top customer friction points</h2><p class="h-sub">Exec-engagement and field signals · signal strength = firm-citation breadth × deal-blocker weight</p></div>'+
     '<div class="sigtoggles"><span class="sigtoglab">Signal strength</span>'+toggles+'</div></div>'+
     '<div class="fnote">Directional — not a representative sample of all Top firms. Tap a row for the linked verbatim.</div>'+
     '<div class="tablewrap"><table class="ftable"><thead><tr><th>#</th><th>Friction theme</th><th>Product</th><th>Category</th><th>Signal strength</th><th class="num">Firms heard</th></tr></thead><tbody>'+(rows||'<tr><td colspan="6" style="padding:18px;color:var(--muted)">No themes at this signal strength — toggle one on.</td></tr>')+'</tbody></table></div>';
@@ -611,7 +597,7 @@ function render(){
   Array.prototype.slice.call(document.querySelectorAll(".lenstog")).forEach(function(b){b.classList.toggle("on",b.dataset.lens===dataLens);});
   Array.prototype.slice.call(document.querySelectorAll(".lossonly")).forEach(function(el){el.classList.toggle("hidden",dataLens==="ece");});
   Array.prototype.slice.call(document.querySelectorAll(".eceonly")).forEach(function(el){el.classList.toggle("hidden",dataLens==="loss");});
-  var lm=$("#lensmeta"); if(lm){lm.innerHTML = dataLens==="loss"?"closed-lost Gong · 105 firms · $9.5M" : (dataLens==="ece"?"ECE demo calls · 21 firms · AI / Agent Studio" : "both sources shown");}
+  var lm=$("#lensmeta"); if(lm){var lc=D.v2.cuts[v2cut]; lm.innerHTML = dataLens==="loss"?("closed-lost Gong · "+lc.firms+" firms · $"+fmtM(lc.dollars)) : (dataLens==="ece"?"ECE demo calls · 21 firms · AI / Agent Studio" : "both sources shown");}
   // source filter reshapes the field panels: TIM section shows for TIM, Heartbeat section for Heartbeat
   Array.prototype.slice.call(document.querySelectorAll(".srcsec")).forEach(function(el){el.classList.toggle("hidden", !(state.source===""||state.source===el.dataset.src));});
   $("#scorecardSec").classList.toggle("hidden", state.lane!=="all"); // program rollup only on the All view
