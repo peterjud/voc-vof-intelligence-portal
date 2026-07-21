@@ -278,6 +278,41 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .prff{margin-top:auto;background:var(--surface-2,#f6f9fc);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:.82rem;line-height:1.45;color:var(--ink);}
 .prfflab{display:block;font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-deep);margin-bottom:4px;}
 @media (prefers-color-scheme: dark){.prff{background:rgba(255,255,255,.03);}}
+/* Accounts master-detail (side list -> open briefing) */
+.acctview{display:grid;grid-template-columns:320px 1fr;gap:18px;margin-top:6px;}
+.acctlist{border:1px solid var(--line-strong);border-radius:10px;overflow-y:auto;max-height:520px;background:var(--surface);}
+.acctrow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--line);border-left:3px solid transparent;padding:11px 13px;cursor:pointer;font:inherit;color:var(--ink);}
+.acctrow:last-child{border-bottom:none;}
+.acctrow:hover{background:var(--surface-2,#f6f9fc);}
+.acctrow.on{background:var(--brand-soft,#eef4fb);border-left-color:var(--brand-deep);}
+.acctdot{width:9px;height:9px;border-radius:50%;flex:none;}
+.acctdot.critical{background:#c0392b;} .acctdot.high{background:#d99109;} .acctdot.medium{background:var(--brand);} .acctdot.watch{background:#8a97a6;}
+.accttx{flex:1;min-width:0;}
+.accttx b{display:block;font-size:.86rem;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.acctsub{display:block;font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.acctval{font-size:.78rem;font-weight:800;color:var(--ink-soft);flex:none;font-variant-numeric:tabular-nums;}
+.acctbrief{border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);padding:20px 22px;box-shadow:var(--shadow-sm);}
+.brhead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.brfirm{font-size:1.35rem;font-weight:800;color:var(--ink);line-height:1.1;letter-spacing:-.01em;}
+.brtier{font-size:.78rem;color:var(--muted);margin-top:4px;}
+.brkpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0 6px;}
+.brk{background:var(--surface-2,#f6f9fc);border:1px solid var(--line);border-radius:9px;padding:9px 11px;}
+.brk span{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.brk b{font-size:1.15rem;font-weight:800;color:var(--ink);} .brk b.tag{font-size:.8rem;}
+.brblock{margin-top:16px;} .brlab{display:block;font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-deep);margin-bottom:6px;}
+.brissue{font-size:.95rem;font-weight:800;color:var(--ink);}
+.brff{margin-top:6px;font-size:.88rem;line-height:1.5;color:var(--ink);background:var(--brand-soft,#eef4fb);border-left:3px solid var(--brand-deep);border-radius:0 8px 8px 0;padding:11px 14px;}
+.chips{display:flex;flex-wrap:wrap;gap:7px;}
+.sigchip{font-size:.76rem;color:var(--ink-soft);background:var(--surface-2,#f6f9fc);border:1px solid var(--line);border-radius:999px;padding:4px 11px;}
+.sigchip b{color:var(--ink);font-variant-numeric:tabular-nums;}
+.brquote{margin:0;font-size:.86rem;line-height:1.55;color:var(--ink-soft);font-style:italic;border-left:3px solid var(--line-strong);padding:2px 0 2px 14px;}
+.brwarn{margin-top:14px;font-size:.8rem;color:#b8620a;background:#fdf3e7;border-radius:8px;padding:9px 12px;}
+.brfoot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;border-top:1px solid var(--line);padding-top:13px;}
+.brsrc{font-size:.72rem;color:var(--muted);}
+.brcopy{appearance:none;border:1px solid var(--brand-deep);background:var(--brand-deep);color:#fff;border-radius:8px;padding:7px 15px;font-size:.8rem;font-weight:700;cursor:pointer;}
+.brcopy:hover{filter:brightness(1.08);}
+@media (prefers-color-scheme: dark){.brk,.sigchip{background:rgba(255,255,255,.03);} .brff{background:rgba(74,159,224,.12);} .brwarn{background:rgba(224,164,74,.12);}}
+@media(max-width:760px){.acctview{grid-template-columns:1fr;} .acctlist{max-height:280px;} .brkpis{grid-template-columns:repeat(2,1fr);}}
 /* IES vs IAS comparison */
 .ivgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:760px){.ivgrid{grid-template-columns:1fr;}}
@@ -570,6 +605,19 @@ var SENT_ORDER = {red:0,amber:1,green:2,neutral:3};
 var state = {lane:"all", segment:"", product:"", source:"", theme:"", sentiment:"", q:""};
 var frictionFilter = {critical:true, high:true, medium:true};
 var firmFilter = "all";
+var firmSel = {}; // v2cut -> selected account index (master-detail)
+var FORCING={
+  "Escalations stall deals":"Recurring issues aren't closing — commit to a resolution-velocity SLA before the rollout stalls.",
+  "Capability gaps at demo":"The demo is exposing gaps — run a pre-demo fit check and bring a firm roadmap date.",
+  "Capability gaps surface at demo":"The demo is exposing gaps — run a pre-demo fit check and bring a firm roadmap date.",
+  "Pricing structure":"Pricing they can't pass through — put a renewal-protection / commit-billing offer on the table.",
+  "Implementation friction":"Onboarding friction is the blocker — assign a dedicated implementation owner.",
+  "Training / enablement gaps":"Enablement gap — schedule targeted training for the firm's team.",
+  "Support quality":"Support responsiveness is the risk — escalate to a named support contact.",
+  "Client perception":"Firm worried how its own clients experience the switch — provide a client-transition playbook.",
+  "General monitoring":"Steady for now — monitor; no forcing action yet."
+};
+function forcingFn(issue){return FORCING[issue]||"Review this firm's signals and set a next action.";}
 var v2cut = "Combined"; // Top 100 product view: Combined / IES / IAS
 var dataLens = "loss"; // Customer views data lens: loss (closed-lost Gong) / ece (ECE AI-demand) / both
 function fmtM(n){n=+n||0; if(n>=1e6){var m=(n/1e6); return (m>=10?m.toFixed(1):m.toFixed(2)).replace(/\.?0+$/,'')+"M";} if(n>=1e3) return Math.round(n/1e3)+"K"; return String(Math.round(n));}
@@ -867,59 +915,62 @@ function renderFirmWatch(){
   var W=D.v2.firms[v2cut]; if(!W){return;}
   var c=D.v2.cuts[v2cut], SIG={critical:"Critical",high:"High",medium:"Medium",watch:"Watch"};
   var list=W.filter(function(r){return firmFilter==="all"||r.signal==="critical"||r.signal==="high";});
-  var body=list.map(function(r,i){
-    var did="fw-"+v2cut+"-"+i;
+  if(!list.length) list=W;
+  var sel=firmSel[v2cut]; if(sel==null||sel>=list.length) sel=0;
+  var f=list[sel];
+  // LEFT — account list (the side drawer)
+  var rows=list.map(function(r,i){
     var sent=r.sentiment==="positive"?"green":r.sentiment==="negative"?"red":"neutral";
-    var top3=(r.top3||[]).map(function(t){return t[0]+" ×"+t[1];}).join(" · ");
-    var detail='<tr class="fdetail" id="'+did+'"><td colspan="7"><div class="fdetail-in">'+
-      (top3?'<span class="lab">Churn signals in this firm\'s calls</span><p class="fwbd">'+esc(top3)+'</p>':'')+
-      (r.snippet?'<span class="lab">Call snippet</span><blockquote>'+esc(r.snippet)+'</blockquote>':'')+
-      (r.cosell?'<div class="kvline"><span class="lab">⚠ Co-sell</span> '+r.cosell_n+' calls flagged co-sell / coaching — call count is inflated, read the deal count.</div>':'')+
-      '</div></td></tr>';
-    return '<tr class="frow" data-d="'+did+'" tabindex="0" role="button">'+
-      '<td><div class="fwfirm">'+esc(cleanFirm(r.firm))+' <span class="chev">›</span></div><div class="fwsub">'+r.tier+(r.cosell?' · <span class="cosellflag">co-sell</span>':'')+'</div></td>'+
-      '<td><span class="sigbadge '+r.signal+'">'+SIG[r.signal]+'</span></td>'+
-      '<td class="num">'+r.calls+'</td>'+
-      '<td class="num">'+r.deals+'</td>'+
-      '<td class="num">'+(r.dollars?'$'+fmtM(r.dollars):'—')+'</td>'+
-      '<td class="fwissue">'+esc(r.issue)+'</td>'+
-      '<td><span class="tag '+sent+'">'+esc(r.sentiment)+'</span></td></tr>'+detail;
+    return '<button class="acctrow'+(i===sel?" on":"")+'" data-i="'+i+'" type="button">'+
+      '<span class="acctdot '+r.signal+'"></span>'+
+      '<span class="accttx"><b>'+esc(cleanFirm(r.firm))+'</b><span class="acctsub">'+r.tier+' · '+esc(r.issue)+'</span></span>'+
+      '<span class="acctval num">'+(r.dollars?'$'+fmtM(r.dollars):r.deals+'d')+'</span></button>';
   }).join("");
+  // RIGHT — briefing for the open account
+  var sent=f.sentiment==="positive"?"green":f.sentiment==="negative"?"red":"neutral";
+  var top3=(f.top3||[]).map(function(t){return '<span class="sigchip">'+esc(t[0])+' <b>×'+t[1]+'</b></span>';}).join("");
+  var brief='<div class="brhead"><div><div class="brfirm">'+esc(cleanFirm(f.firm))+'</div>'+
+      '<div class="brtier">'+f.tier+(f.cosell?' · <span class="cosellflag">co-sell</span>':'')+' · Top 100 · '+v2cut+'</div></div>'+
+      '<span class="sigbadge '+f.signal+'">'+SIG[f.signal]+'</span></div>'+
+    '<div class="brkpis">'+
+      '<div class="brk"><span>Calls</span><b class="num">'+f.calls+'</b></div>'+
+      '<div class="brk"><span>Lost deals</span><b class="num">'+f.deals+'</b></div>'+
+      '<div class="brk"><span>$ at risk</span><b class="num">'+(f.dollars?'$'+fmtM(f.dollars):'—')+'</b></div>'+
+      '<div class="brk"><span>Sentiment</span><b class="tag '+sent+'">'+esc(f.sentiment)+'</b></div></div>'+
+    '<div class="brblock"><span class="brlab">Top issue &amp; forcing function</span>'+
+      '<p class="brissue">'+esc(f.issue)+'</p><p class="brff">'+esc(forcingFn(f.issue))+'</p></div>'+
+    (top3?'<div class="brblock"><span class="brlab">Signals in this firm\'s calls</span><div class="chips">'+top3+'</div></div>':'')+
+    (f.snippet?'<div class="brblock"><span class="brlab">Call evidence</span><blockquote class="brquote">'+esc(f.snippet)+'</blockquote></div>':'')+
+    (f.cosell?'<div class="brwarn">⚠ '+f.cosell_n+' calls flagged co-sell / coaching — the call count is inflated; read the deal count.</div>':'')+
+    '<div class="brfoot"><span class="brsrc">Source: Gong closed-lost · '+v2cut+' · directional · signal = churn-driver density</span>'+
+      '<button class="brcopy" type="button" data-copy="1">Copy briefing</button></div>';
   var cov=c.deals?Math.round(100*c.dollars_cov/c.deals):0;
   $("#firmWatch").innerHTML=
-   '<div class="chart-head"><div><h2 class="h">Top 100 firm watchlist — '+v2cut+'</h2><p class="h-sub">'+c.firms+' firms in corpus · top by tier then signal shown · calls include co-sell/coaching, read deals too</p></div>'+
+   '<div class="chart-head"><div><h2 class="h">Accounts — open one to see the briefing</h2><p class="h-sub">'+c.firms+' firms · '+list.length+' shown, worst-first · click an account on the left</p></div>'+
    '<div class="fwtoggles"><button class="fwtog'+(firmFilter==="all"?" on":"")+'" data-ff="all">All firms</button>'+
    '<button class="fwtog'+(firmFilter==="high"?" on":"")+'" data-ff="high">High signal</button></div></div>'+
-   '<div class="tablewrap"><table class="ftable"><thead><tr><th>Firm</th><th>Signal</th><th class="num">Calls</th><th class="num">Deals</th><th class="num">$ lost</th><th>Top issue</th><th>Sentiment</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
-   '<div class="fnote">Signal = churn-driver density (directional); co-sell firms capped down. $ lost = Salesforce closed-lost (linked, ~'+cov+'% coverage — a floor). <b>Calls include co-sell/coaching viral calls; deals is the truer count.</b> Diamond firms (T1 with 10+ calls) carry the firm-level read.</div>';
-  Array.prototype.slice.call(document.querySelectorAll("#firmWatch [data-ff]")).forEach(function(b){b.addEventListener("click",function(){firmFilter=b.dataset.ff;renderFirmWatch();});});
-  Array.prototype.slice.call(document.querySelectorAll("#firmWatch .frow")).forEach(function(tr){
-    function toggle(){var d=document.getElementById(tr.dataset.d);if(d){tr.classList.toggle("open",d.classList.toggle("show"));}}
-    tr.addEventListener("click",toggle);
-    tr.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
-  });
+   '<div class="acctview"><div class="acctlist" role="listbox">'+rows+'</div><div class="acctbrief">'+brief+'</div></div>'+
+   '<div class="fnote">$ at risk = Salesforce closed-lost (linked, ~'+cov+'% coverage — a floor). <b>Calls include co-sell/coaching viral calls; deals is the truer count.</b> Diamond firms (T1 with 10+ calls) carry the firm-level read.</div>';
+  Array.prototype.slice.call(document.querySelectorAll("#firmWatch [data-ff]")).forEach(function(b){b.addEventListener("click",function(){firmFilter=b.dataset.ff;firmSel[v2cut]=0;renderFirmWatch();});});
+  Array.prototype.slice.call(document.querySelectorAll("#firmWatch .acctrow")).forEach(function(b){b.addEventListener("click",function(){firmSel[v2cut]=+b.dataset.i;renderFirmWatch();var bp=$("#firmWatch .acctbrief");if(bp&&window.matchMedia("(max-width:760px)").matches)bp.scrollIntoView({behavior:"smooth",block:"nearest"});});});
+  var cp=$("#firmWatch .brcopy"); if(cp){cp.addEventListener("click",function(){
+    var txt=cleanFirm(f.firm)+" — "+SIG[f.signal]+" ("+f.tier+", "+v2cut+")\n"+
+      f.calls+" calls · "+f.deals+" lost deals · "+(f.dollars?"$"+fmtM(f.dollars)+" at risk":"no linked $")+" · sentiment "+f.sentiment+"\n"+
+      "Top issue: "+f.issue+"\nForcing function: "+forcingFn(f.issue)+
+      (f.snippet?"\nEvidence: "+f.snippet:"");
+    if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){cp.textContent="Copied ✓";setTimeout(function(){cp.textContent="Copy briefing";},1500);});}
+  });}
 }
 
 /* ---------- Priority risk roll-up (command-center, cut-aware) ---------- */
 function renderPriorityRoll(){
   var box=$("#priorityRoll"); if(!box) return;
   var W=D.v2.firms[v2cut]||[];
-  var FF={
-    "Escalations stall deals":"Recurring issues aren't closing — commit to a resolution-velocity SLA before the rollout stalls.",
-    "Capability gaps at demo":"The demo is exposing gaps — run a pre-demo fit check and bring a firm roadmap date.",
-    "Capability gaps surface at demo":"The demo is exposing gaps — run a pre-demo fit check and bring a firm roadmap date.",
-    "Pricing structure":"Pricing they can't pass through — put a renewal-protection / commit-billing offer on the table.",
-    "Implementation friction":"Onboarding friction is the blocker — assign a dedicated implementation owner.",
-    "Training / enablement gaps":"Enablement gap — schedule targeted training for the firm's team.",
-    "Support quality":"Support responsiveness is the risk — escalate to a named support contact.",
-    "Client perception":"Firm worried how its own clients experience the switch — provide a client-transition playbook.",
-    "General monitoring":"Steady for now — monitor; no forcing action yet."
-  };
   var rank={critical:3,high:2,medium:1,watch:0};
   var top=W.slice().sort(function(a,b){return (rank[b.signal]-rank[a.signal])||(b.dollars-a.dollars);}).slice(0,5);
   var SIG={critical:"Critical",high:"High",medium:"Medium",watch:"Watch"};
   var cards=top.map(function(f){
-    var ff=FF[f.issue]||"Review this firm's signals and set a next action.";
+    var ff=forcingFn(f.issue);
     var big=f.dollars>=500000?('$'+fmtM(f.dollars)+' at risk'):(f.deals+' lost deal'+(f.deals===1?'':'s'));
     return '<div class="prcard '+f.signal+'"><div class="prtop"><span class="sigbadge '+f.signal+'">'+SIG[f.signal]+'</span><span class="prbig num">'+big+'</span></div>'+
       '<div class="prfirm">'+esc(cleanFirm(f.firm))+'</div>'+
