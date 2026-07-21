@@ -229,6 +229,34 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .themebiglab{font-size:.76rem;color:var(--ink-soft);font-weight:600;}
 .themebody{font-size:.84rem;color:var(--ink);line-height:1.48;margin:10px 0;flex:1;}
 .themesrc{font-size:.72rem;color:var(--muted);font-weight:600;border-top:1px dashed var(--line);padding-top:8px;}
+/* Trends tab */
+.trsub{font-size:.85rem;color:var(--muted);margin:2px 0 16px;max-width:70ch;}
+.trdeltas{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;}
+.trdelta{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--line-strong);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow-sm);}
+.trdelta.good{border-left-color:#16a34a;} .trdelta.bad{border-left-color:#c0392b;}
+.trd-top{display:flex;align-items:center;gap:8px;}
+.trarrow{font-size:.9rem;font-weight:800;}
+.trdelta.good .trarrow{color:#16a34a;} .trdelta.bad .trarrow{color:#c0392b;}
+.trd-lab{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.trd-val{font-size:1.9rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;margin:6px 0 4px;font-variant-numeric:tabular-nums;}
+.trd-sub{font-size:.78rem;color:var(--ink-soft);line-height:1.4;}
+.trlegend{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0 4px;}
+.trleg{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;color:var(--ink-soft);font-weight:600;}
+.trleg i{width:12px;height:3px;border-radius:2px;display:inline-block;}
+.trchartwrap{overflow-x:auto;margin-top:6px;}
+.trchart{width:100%;height:auto;min-width:340px;display:block;}
+.trgrid{stroke:var(--line);stroke-width:1;}
+.tryl{fill:var(--muted);font-size:11px;text-anchor:end;font-variant-numeric:tabular-nums;}
+.trxl{fill:var(--muted);font-size:11px;text-anchor:middle;font-weight:600;}
+.trendlab{font-size:12.5px;font-weight:800;}
+.trnote{font-size:.8rem;color:var(--ink-soft);line-height:1.5;margin-top:12px;border-top:1px solid var(--line);padding-top:10px;}
+.emrow{display:flex;align-items:center;gap:12px;padding:11px 2px;border-top:1px solid var(--line);}
+.emrow:first-child{border-top:none;}
+.emdir{font-size:.85rem;font-weight:800;flex:none;width:20px;text-align:center;}
+.emdir.up{color:#c0392b;} .emdir.steady{color:var(--muted);} .emdir.down{color:#16a34a;}
+.emtx{flex:1;} .emtx b{display:block;font-size:.88rem;color:var(--ink);font-weight:800;} .emtx span{font-size:.78rem;color:var(--muted);}
+.emsev{font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;flex:none;}
+.emsev.critical{background:#fdeeec;color:#c0392b;} .emsev.high{background:#fdf3e7;color:#b8620a;} .emsev.steady{background:#eef1f5;color:var(--muted);}
 /* IES vs IAS comparison */
 .ivgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:760px){.ivgrid{grid-template-columns:1fr;}}

@@ -58,7 +58,7 @@ $("#reset").addEventListener("click",function(){
 });
 
 /* ---------- tabs ---------- */
-var VALID_LANES=["all","top100","customer","field","sources","partners","investors"];
+var VALID_LANES=["all","top100","customer","field","trends","sources","partners","investors"];
 function selectLane(lane){
   if(VALID_LANES.indexOf(lane)<0) lane="all";
   document.querySelectorAll(".tab").forEach(function(x){x.setAttribute("aria-selected", x.dataset.lane===lane?"true":"false");});
@@ -544,6 +544,44 @@ function renderThemes(){
   }).join("");
 }
 
+/* ---------- Trends tab ---------- */
+function renderTrends(){
+  var T=D.trendsView, ts=D.timeseries;
+  $("#trendsSub").textContent=T.sub;
+  $("#trendsDeltas").innerHTML=T.deltas.map(function(d){
+    var arrow=d.dir==="up"?"▲":d.dir==="down"?"▼":"→", tone=d.bad?"bad":"good";
+    return '<div class="trdelta '+tone+'"><div class="trd-top"><span class="trarrow">'+arrow+'</span><span class="trd-lab">'+esc(d.label)+'</span></div>'+
+      '<div class="trd-val">'+esc(d.value)+'</div><div class="trd-sub">'+esc(d.sub)+'</div></div>';
+  }).join("");
+  // inline SVG trend chart
+  var W=520,H=240,pl=44,pr=44,pt=22,pb=42,iw=W-pl-pr,ih=H-pt-pb;
+  var labels=ts.labels,n=labels.length;
+  var allv=ts.series.reduce(function(a,s){return a.concat(s.values);},[]);
+  var ymax=Math.max(10,Math.ceil(Math.max.apply(null,allv)/10)*10);
+  var X=function(i){return pl+(n===1?0:iw*i/(n-1));},Y=function(v){return pt+ih-(v/ymax)*ih;};
+  var grid="";for(var g=0;g<=ymax;g+=10){var gy=Y(g);grid+='<line x1="'+pl+'" y1="'+gy+'" x2="'+(W-pr)+'" y2="'+gy+'" class="trgrid"/><text x="'+(pl-8)+'" y="'+(gy+4)+'" class="tryl">'+g+'%</text>';}
+  var xlab=labels.map(function(l,i){return '<text x="'+X(i)+'" y="'+(H-14)+'" class="trxl">'+esc(l)+'</text>';}).join("");
+  var lines=ts.series.map(function(s){
+    var col=s.color==="red"?"#c0392b":"#0077c5";
+    var pts=s.values.map(function(v,i){return X(i)+","+Y(v);}).join(" ");
+    var dots=s.values.map(function(v,i){return '<circle cx="'+X(i)+'" cy="'+Y(v)+'" r="'+(i===n-1?5:3.5)+'" fill="'+col+'"/>';}).join("");
+    var end='<text x="'+(X(n-1)+9)+'" y="'+(Y(s.values[n-1])+4)+'" class="trendlab" fill="'+col+'">'+s.values[n-1]+'%</text>';
+    return '<polyline points="'+pts+'" fill="none" stroke="'+col+'" stroke-width="2.5" stroke-linejoin="round"/>'+dots+end;
+  }).join("");
+  var legend=ts.series.map(function(s){var col=s.color==="red"?"#c0392b":"#0077c5";return '<span class="trleg"><i style="background:'+col+'"></i>'+esc(s.name)+'</span>';}).join("");
+  var chart='<div class="card"><h2 class="h" style="font-size:.95rem">'+esc(ts.title)+'</h2><p class="h-sub">'+esc(ts.sub)+'</p>'+
+    '<div class="trlegend">'+legend+'</div>'+
+    '<div class="trchartwrap"><svg viewBox="0 0 '+W+' '+H+'" class="trchart" role="img" aria-label="'+esc(ts.title)+'">'+grid+lines+xlab+'</svg></div>'+
+    '<p class="trnote">'+esc(ts.note)+'</p></div>';
+  var SEV={critical:"Critical",high:"High",steady:"Steady"};
+  var em=T.emerging.map(function(e){
+    var arrow=e.dir==="up"?"▲":e.dir==="steady"?"→":"▼";
+    return '<div class="emrow"><div class="emdir '+e.dir+'">'+arrow+'</div><div class="emtx"><b>'+esc(e.name)+'</b><span>'+esc(e.note)+'</span></div><span class="emsev '+e.sev+'">'+SEV[e.sev]+'</span></div>';
+  }).join("");
+  var emerging='<div class="card"><h2 class="h" style="font-size:.95rem">Emerging &amp; rising signals</h2><p class="h-sub">Direction from the latest pulls · severity by impact</p><div style="margin-top:10px">'+em+'</div></div>';
+  $("#trendsBody").innerHTML=chart+emerging;
+}
+
 /* ---------- Sources / signal-coverage tab ---------- */
 function renderSources(){
   var S=D.sources; if(!S) return;
@@ -571,13 +609,14 @@ function renderSources(){
 
 /* ---------- master render ---------- */
 function render(){
-  var isSources = state.lane==="sources";
+  var isSources = state.lane==="sources", isTrends = state.lane==="trends", special = isSources||isTrends;
   $("#lane-sources").classList.toggle("hidden",!isSources);
-  document.querySelector(".filterbar").classList.toggle("hidden",isSources);
-  if(isSources){
+  $("#lane-trends").classList.toggle("hidden",!isTrends);
+  document.querySelector(".filterbar").classList.toggle("hidden",special);
+  if(special){
     $("#lane-data").classList.add("hidden");
     $("#lane-empty").classList.add("hidden");
-    renderSources();
+    if(isSources) renderSources(); else renderTrends();
     return;
   }
   var empty = state.lane==="partners"||state.lane==="investors";
