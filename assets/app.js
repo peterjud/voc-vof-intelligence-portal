@@ -349,6 +349,38 @@ function renderFirmWatch(){
   });
 }
 
+/* ---------- Priority risk roll-up (command-center, cut-aware) ---------- */
+function renderPriorityRoll(){
+  var box=$("#priorityRoll"); if(!box) return;
+  var W=D.v2.firms[v2cut]||[];
+  var FF={
+    "Escalations stall deals":"Recurring issues aren't closing — commit to a resolution-velocity SLA before the rollout stalls.",
+    "Capability gaps at demo":"The demo is exposing gaps — run a pre-demo fit check and bring a firm roadmap date.",
+    "Capability gaps surface at demo":"The demo is exposing gaps — run a pre-demo fit check and bring a firm roadmap date.",
+    "Pricing structure":"Pricing they can't pass through — put a renewal-protection / commit-billing offer on the table.",
+    "Implementation friction":"Onboarding friction is the blocker — assign a dedicated implementation owner.",
+    "Training / enablement gaps":"Enablement gap — schedule targeted training for the firm's team.",
+    "Support quality":"Support responsiveness is the risk — escalate to a named support contact.",
+    "Client perception":"Firm worried how its own clients experience the switch — provide a client-transition playbook.",
+    "General monitoring":"Steady for now — monitor; no forcing action yet."
+  };
+  var rank={critical:3,high:2,medium:1,watch:0};
+  var top=W.slice().sort(function(a,b){return (rank[b.signal]-rank[a.signal])||(b.dollars-a.dollars);}).slice(0,5);
+  var SIG={critical:"Critical",high:"High",medium:"Medium",watch:"Watch"};
+  var cards=top.map(function(f){
+    var ff=FF[f.issue]||"Review this firm's signals and set a next action.";
+    var big=f.dollars>=500000?('$'+fmtM(f.dollars)+' at risk'):(f.deals+' lost deal'+(f.deals===1?'':'s'));
+    return '<div class="prcard '+f.signal+'"><div class="prtop"><span class="sigbadge '+f.signal+'">'+SIG[f.signal]+'</span><span class="prbig num">'+big+'</span></div>'+
+      '<div class="prfirm">'+esc(cleanFirm(f.firm))+'</div>'+
+      '<div class="prmeta"><span class="num">'+f.calls+' calls · '+f.deals+' deals</span> · '+esc(f.issue)+'</div>'+
+      '<div class="prff"><span class="prfflab">Forcing function</span>'+esc(ff)+'</div></div>';
+  }).join("");
+  var ncrit=W.filter(function(f){return f.signal==="critical";}).length;
+  box.innerHTML='<div class="section-tag">Priority risk roll-up — act on these first</div>'+
+    '<div class="prhead">'+ncrit+' firms at critical signal in the '+v2cut+' view · sorted worst-first, dollars break ties · each with the forcing function to move it</div>'+
+    '<div class="prgrid">'+cards+'</div>';
+}
+
 /* ---------- Top 100 gaps: the takeaway (hero cards) ---------- */
 function renderGaps(){
   var G = (v2cut==="IAS") ? D.iasGaps : D.top100churn; if(!G){return;}
@@ -643,7 +675,7 @@ function render(){
   $("#themesSec").classList.toggle("hidden", state.lane!=="all"); // themes overview only on the All view
   var filtered = D.signals.filter(matches);
   renderScorecard();renderThemes();renderKPIs(filtered);renderTimeseries();renderMix();renderHeartbeat();
-  renderCutbar();renderGaps();renderIesVsIas();renderInsightTable("#eceTable",D.eceThemes);renderFirmWatch();renderCompetitors();
+  renderCutbar();renderPriorityRoll();renderGaps();renderIesVsIas();renderInsightTable("#eceTable",D.eceThemes);renderFirmWatch();renderCompetitors();
   renderTrendingTwo();renderFriction();renderEcePanel();
   renderWordcloud(filtered);
   renderSummary(filtered);

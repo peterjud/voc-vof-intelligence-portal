@@ -257,6 +257,19 @@ h2.h{font-size:1.05rem;font-weight:700;margin:0;letter-spacing:-.01em;}
 .emtx{flex:1;} .emtx b{display:block;font-size:.88rem;color:var(--ink);font-weight:800;} .emtx span{font-size:.78rem;color:var(--muted);}
 .emsev{font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;flex:none;}
 .emsev.critical{background:#fdeeec;color:#c0392b;} .emsev.high{background:#fdf3e7;color:#b8620a;} .emsev.steady{background:#eef1f5;color:var(--muted);}
+/* Priority risk roll-up (command-center) */
+.prhead{font-size:.8rem;color:var(--muted);margin:-6px 0 14px;}
+.prgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;}
+.prcard{background:var(--surface);border:1px solid var(--line-strong);border-top:4px solid var(--line-strong);border-radius:12px;padding:15px 17px 14px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;}
+.prcard.critical{border-top-color:#c0392b;} .prcard.high{border-top-color:#d99109;} .prcard.medium{border-top-color:var(--brand);}
+.prtop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;}
+.prbig{font-size:.86rem;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;}
+.prfirm{font-size:1.05rem;font-weight:800;color:var(--ink);line-height:1.15;}
+.prmeta{font-size:.78rem;color:var(--muted);margin:5px 0 12px;}
+.prmeta .num{color:var(--ink-soft);font-weight:700;}
+.prff{margin-top:auto;background:var(--surface-2,#f6f9fc);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:.82rem;line-height:1.45;color:var(--ink);}
+.prfflab{display:block;font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-deep);margin-bottom:4px;}
+@media (prefers-color-scheme: dark){.prff{background:rgba(255,255,255,.03);}}
 /* IES vs IAS comparison */
 .ivgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:760px){.ivgrid{grid-template-columns:1fr;}}
