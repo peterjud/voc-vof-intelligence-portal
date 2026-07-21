@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOC Portal — Build Plan &amp; Directions</title>
+<meta name="description" content="Working spec for the Customer & Field Intelligence Portal: purpose, every direction given, what's live, the command-center layout, and the themes spine. Confidential.">
+<style>
+  :root{
+    --ink:#17304f; --body:#33424f; --muted:#66788a;
+    --accent:#0077c5; --accent-soft:#eef4fb;
+    --paper:#ffffff; --ground:#f4f7fb; --line:#e3e9f0; --line-soft:#eef2f7;
+    --live:#16a34a; --live-bg:#eaf6ee; --next:#0077c5; --next-bg:#eaf2fb;
+    --later:#8a97a6; --later-bg:#eef1f5;
+    --warn:#c47a1a; --warn-bg:#fdf3e7; --crit:#c0392b; --crit-bg:#fdeeec;
+    --shadow:0 1px 2px rgba(23,48,79,.05),0 6px 20px rgba(23,48,79,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--ink:#eaf1f8;--body:#c3d0dc;--muted:#8a9bab;--accent:#4a9fe0;--accent-soft:#15304a;
+      --paper:#152838;--ground:#0e1c29;--line:#26394c;--line-soft:#1c2c3b;
+      --live:#4ade80;--live-bg:#12331f;--next:#4a9fe0;--next-bg:#122c44;--later:#7b8a99;--later-bg:#1b2836;
+      --warn:#e0a44a;--warn-bg:#3a2c14;--crit:#f0796b;--crit-bg:#3a1c18;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.35);}
+  }
+  :root[data-theme="dark"]{--ink:#eaf1f8;--body:#c3d0dc;--muted:#8a9bab;--accent:#4a9fe0;--accent-soft:#15304a;
+    --paper:#152838;--ground:#0e1c29;--line:#26394c;--line-soft:#1c2c3b;
+    --live:#4ade80;--live-bg:#12331f;--next:#4a9fe0;--next-bg:#122c44;--later:#7b8a99;--later-bg:#1b2836;
+    --warn:#e0a44a;--warn-bg:#3a2c14;--crit:#f0796b;--crit-bg:#3a1c18;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.35);}
+  :root[data-theme="light"]{--ink:#17304f;--body:#33424f;--muted:#66788a;--accent:#0077c5;--accent-soft:#eef4fb;
+    --paper:#ffffff;--ground:#f4f7fb;--line:#e3e9f0;--line-soft:#eef2f7;
+    --live:#16a34a;--live-bg:#eaf6ee;--next:#0077c5;--next-bg:#eaf2fb;--later:#8a97a6;--later-bg:#eef1f5;
+    --warn:#c47a1a;--warn-bg:#fdf3e7;--crit:#c0392b;--crit-bg:#fdeeec;
+    --shadow:0 1px 2px rgba(23,48,79,.05),0 6px 20px rgba(23,48,79,.06);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--ground);color:var(--body);
+    font-family:-apple-system,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+    font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:940px;margin:0 auto;padding:40px 24px 90px;}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);}
+  h1{font-size:30px;line-height:1.14;font-weight:800;color:var(--ink);margin:8px 0 0;letter-spacing:-.015em;text-wrap:balance;}
+  h2{font-size:20px;font-weight:800;color:var(--ink);margin:0;letter-spacing:-.01em;text-wrap:balance;}
+  h3{font-size:15px;font-weight:800;color:var(--ink);margin:0;}
+  p{margin:0;} .num{font-variant-numeric:tabular-nums;}
+  .head{border-bottom:1px solid var(--line);padding-bottom:22px;}
+  .lede{font-size:16.5px;color:var(--body);margin-top:12px;max-width:66ch;}
+  .metaline{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:16px;font-size:12.5px;color:var(--muted);align-items:center;}
+  .metaline b{color:var(--ink);font-weight:700;}
+  .link{color:var(--accent);text-decoration:none;font-weight:700;} .link:hover{text-decoration:underline;}
+  section{margin-top:44px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+  .sec-sub{font-size:14px;color:var(--muted);max-width:66ch;margin-bottom:16px;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+  .pill.live{background:var(--live-bg);color:var(--live);}
+  .pill.next{background:var(--next-bg);color:var(--next);}
+  .pill.later{background:var(--later-bg);color:var(--later);}
+  .pill.dec{background:var(--warn-bg);color:var(--warn);}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+  .dot.g{background:var(--live);} .dot.y{background:var(--warn);} .dot.r{background:var(--crit);}
+  .purpose{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .pcard{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);}
+  .pcard .k{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+  .pcard p{margin-top:7px;font-size:14.5px;color:var(--body);} .pcard b{color:var(--ink);font-weight:700;}
+  /* directions checklist */
+  .grp{margin-top:22px;}
+  .grp-h{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .grp-h b{font-size:13px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);}
+  .items{display:flex;flex-direction:column;gap:8px;}
+  .item{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:12px 15px;box-shadow:var(--shadow);display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;}
+  .item .mk{font-weight:800;font-size:15px;line-height:1.3;}
+  .item .mk.done{color:var(--live);} .item .mk.todo{color:var(--next);} .item .mk.dec{color:var(--warn);} .item .mk.prog{color:var(--muted);}
+  .item .tx b{color:var(--ink);font-weight:800;}
+  .item .tx{font-size:14px;color:var(--body);}
+  .item .tx .note{color:var(--muted);font-size:12.5px;display:block;margin-top:2px;}
+  .item .tx .from{color:var(--accent);font-weight:700;font-size:11.5px;}
+  /* layout blueprint */
+  .stack{display:flex;flex-direction:column;gap:8px;}
+  .band{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:13px 16px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;}
+  .band .idx{flex:none;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;}
+  .band .t b{color:var(--ink);font-weight:800;font-size:14.5px;} .band .t p{margin-top:3px;font-size:13.5px;color:var(--muted);}
+  .band .t .src{color:var(--accent);font-weight:700;}
+  /* themes */
+  .themes{border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);background:var(--paper);}
+  .trow{display:grid;grid-template-columns:1.4fr 1fr 150px;gap:14px;padding:13px 18px;border-top:1px solid var(--line-soft);align-items:center;}
+  .trow:first-child{border-top:none;}
+  .trow .q{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:2px;}
+  .trow .name{font-size:14.5px;font-weight:800;color:var(--ink);}
+  .trow .ans{font-size:13.5px;color:var(--body);} .trow .ans b{color:var(--ink);}
+  .trow .st{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);justify-self:end;text-align:right;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:14px;align-items:center;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .callout{background:var(--warn-bg);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:12px;padding:17px 20px;}
+  .callout h3{color:var(--ink);font-size:16px;} .callout p{margin-top:8px;font-size:14.5px;color:var(--body);} .callout b{color:var(--ink);}
+  @media(max-width:640px){.purpose{grid-template-columns:1fr;}.trow{grid-template-columns:1fr;gap:6px;}.trow .st{justify-self:start;}h1{font-size:25px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="eyebrow">Customer &amp; Field Intelligence Portal · Working spec</div>
+    <h1>Build plan &amp; directions — the full capture before we change the portal</h1>
+    <p class="lede">One live view of Voice of Customer and Voice of Field, built to drive Travis's sales strategy. This page captures every direction given, what's already live, the layout we're moving to, and how the five themes tie it together. We build against this list, then update the primary portal.</p>
+    <div class="metaline">
+      <span>Updated <b>Jul 20, 2026</b></span><span>·</span>
+      <span>Dashboard: <a class="link" href="https://peterjud.github.io/voc-vof-intelligence-portal/">the live portal</a></span><span>·</span>
+      <span>Confidential — internal</span>
+    </div>
+  </header>
+
+  <!-- PURPOSE -->
+  <section>
+    <div class="sec-head"><h2>Purpose — what this is for</h2></div>
+    <div class="purpose">
+      <div class="pcard"><div class="k">What it is</div><p>One <b>live, shareable</b> read on why we win and lose, from the field and from customers — replacing status slides with a single source of signal.</p></div>
+      <div class="pcard"><div class="k">Who it's for</div><p><b>Travis (CSO) and Erin</b>, plus Erin's team. Built for a busy leader to open cold and know where to look.</p></div>
+      <div class="pcard"><div class="k">The objective</div><p>Direct <b>real-time intelligence</b> to leadership so they can be agile in strategy and response as the business moves.</p></div>
+      <div class="pcard"><div class="k">How you read it</div><p><b>Top risks first → open one → see the recommended action.</b> Summary before detail; every insight ends in a decision.</p></div>
+    </div>
+  </section>
+
+  <!-- DIRECTIONS FULL CAPTURE -->
+  <section>
+    <div class="sec-head"><h2>Every direction you gave — the master checklist</h2></div>
+    <p class="sec-sub">Captured from the whole thread so nothing is lost. We execute this list on the primary portal.</p>
+
+    <div class="grp">
+      <div class="grp-h"><span class="pill live"><span class="dot g"></span>Done &amp; live</span></div>
+      <div class="items">
+        <div class="item"><div class="mk done">✓</div><div class="tx"><b>Sources / signal-coverage tab</b> — Source · Volume · Frequency · Last pull · Green/Yellow/Red, made visual, "where to get data" dropped. <span class="note">Pulse &amp; Cresta added as intended-but-pending sources.</span></div></div>
+        <div class="item"><div class="mk done">✓</div><div class="tx"><b>ECE wave 2 folded in</b> — 26 exec / Agent Studio calls, 21 firms, behind a Data-lens toggle (Closed-lost / ECE — AI demand / Both).</div></div>
+        <div class="item"><div class="mk done">✓</div><div class="tx"><b>Themes on the Overview</b> — the 5 questions, each answered from our data with a status. <span class="note">First pass; gets the coverage detail below.</span></div></div>
+        <div class="item"><div class="mk done">✓</div><div class="tx"><b>Purpose framing surfaced</b> — purpose / objective / how-to-read at the top of the read.</div></div>
+        <div class="item"><div class="mk done">✓</div><div class="tx"><b>Two-pass accuracy audit</b> — reconciled firm/source/ECE/signal counts, removed stale &amp; dead datasets, fixed misleading labels.</div></div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-h"><span class="pill next"><span class="dot" style="background:var(--next)"></span>To build</span></div>
+      <div class="items">
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Priority Risk Roll-up at the very top</b> — the 5 things needing attention now, each a one-line narrative + a forcing function. <span class="from">from the Scout / Customer Feed portals</span></div></div>
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Recommended action on every insight</b> — nothing is just a number; each ends in a decision. Accept / dismiss feeds an Actions queue.</div></div>
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Click-to-open briefing sidebar</b> — a left firm list; open one and a full briefing opens on the right (narrative, forcing function, action, evidence quotes, source &amp; confidence, Copy briefing). <span class="from">the drill-in you liked</span></div></div>
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Trends view</b> — run-movement deltas (score / risk / opportunity) + a signal-trend line where we have multiple waves, plus emerging issues trending up.</div></div>
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Themes coverage matrix</b> — for each theme, go item-by-item through "what we're listening for" and mark Covered / Partial / Gap, tied to source status. Doubles as the data to-do list.</div></div>
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Watchlist upgrade</b> — Risk dots · Owner · Top Issue · Sentiment, sorted worst-first, filterable by risk level.</div></div>
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Sources → "Agents &amp; freshness"</b> — fresh / stale / never-analyzed with an Analyze action; the data-flow map framed as agents.</div></div>
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Daily digest agent</b> — top 3 things from yesterday + recommended action, to <b>Erin</b>; accept/reject learns what to surface.</div></div>
+        <div class="item"><div class="mk todo">▶</div><div class="tx"><b>Deep-linkable views</b> — bookmark/share a specific tab, lens, or theme directly.</div></div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-h"><span class="pill dec"><span class="dot y"></span>Decisions I need from you</span></div>
+      <div class="items">
+        <div class="item"><div class="mk dec">?</div><div class="tx"><b>Hero "82%" vintage</b> — keep the June exec-read narrative (I label the denominator so it stops clashing with the V2 KPI) <b>or</b> migrate the hero fully to V2 (loses the punchy 82%). <span class="note">Recommend: keep + label.</span></div></div>
+        <div class="item"><div class="mk dec">?</div><div class="tx"><b>Customer vs Top 100 tabs</b> — they currently show the same thing. Merge them, or split jobs (Top 100 = closed-lost/watchlist; Customer = broader ECE demand + verbatims)?</div></div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-h"><span class="pill later"><span class="dot" style="background:var(--later)"></span>Program &amp; data (not the dashboard)</span></div>
+      <div class="items">
+        <div class="item"><div class="mk prog">⚙</div><div class="tx"><b>Automate the daily Gong feed</b> — the core bottleneck; today it's a manual pull via Brian.</div></div>
+        <div class="item"><div class="mk prog">⚙</div><div class="tx"><b>Stand up Pulse</b> and define the recurring weekly query with Brian (beyond Top 100).</div></div>
+        <div class="item"><div class="mk prog">⚙</div><div class="tx"><b>Capture the ~70%</b> of customer signal in email / text that Gong misses.</div></div>
+        <div class="item"><div class="mk prog">⚙</div><div class="tx"><b>Shape the upfront prompts</b> in each listening mechanism for cleaner signal; run the every-other-week VOC review off this dashboard.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAYOUT BLUEPRINT -->
+  <section>
+    <div class="sec-head"><h2>The layout we're moving to</h2></div>
+    <p class="sec-sub">Modeled on the command-center portals you shared. The order is the fix for "where do my eyes go."</p>
+    <div class="stack">
+      <div class="band"><div class="idx">1</div><div class="t"><b>Purpose &amp; status up top</b><p>Purpose line, then status KPIs (firms · positive · watch · at-risk) — summary before detail.</p></div></div>
+      <div class="band"><div class="idx">2</div><div class="t"><b>Priority Risk Roll-up — the 5 things now</b><p>Each a narrative + a <span class="src">forcing function</span> + a recommended action. Your daily digest, on the page.</p></div></div>
+      <div class="band"><div class="idx">3</div><div class="t"><b>Click-to-open briefing sidebar</b><p>Left rail of firms → open one → full briefing with evidence, action, source &amp; confidence, Copy briefing.</p></div></div>
+      <div class="band"><div class="idx">4</div><div class="t"><b>Recommendation + action on every insight</b><p>Accept / dismiss feeds an Actions queue; the model learns what to surface.</p></div></div>
+      <div class="band"><div class="idx">5</div><div class="t"><b>Trends &amp; movement</b><p>Run-movement deltas and a signal-trend line; emerging issues trending up.</p></div></div>
+      <div class="band"><div class="idx">6</div><div class="t"><b>Sources → Agents &amp; freshness</b><p>The G/Y/R map as agents with fresh / stale / never status and an Analyze action.</p></div></div>
+    </div>
+  </section>
+
+  <!-- THEMES -->
+  <section>
+    <div class="sec-head"><h2>The themes, connected — the spine</h2></div>
+    <p class="sec-sub">Your five themes organize everything. Each shows the question, the current answer, and whether the feeding source is solid or a gap.</p>
+    <div class="themes">
+      <div class="trow"><div><div class="name">1 · Customer &amp; product friction</div><div class="q">Where does time-to-value stall after the sale?</div></div><div class="ans"><b>82%</b> of Top 100 losses from 3 gaps; post-sale drag 10%→13.5%</div><div class="st"><span class="dot y"></span>Gong · TiM — partial</div></div>
+      <div class="trow"><div><div class="name">2 · Competitive intelligence</div><div class="q">Who are we losing to, and why did they win?</div></div><div class="ans"><b>BASIS</b> across 13 firms; NetSuite / Sage on closed-lost</div><div class="st"><span class="dot y"></span>Gong · ECE — partial</div></div>
+      <div class="trow"><div><div class="name">3 · Seller effectiveness &amp; AI</div><div class="q">Right things? Is AI changing how they work?</div></div><div class="ans"><b>28.9%</b> customer-facing time; seller-AI signal thin</div><div class="st"><span class="dot r"></span>Cresta pending — gap</div></div>
+      <div class="trow"><div><div class="name">4 · Partner &amp; VAR health</div><div class="q">What do partners need? Where's the channel short?</div></div><div class="ans"><b>8 of 21</b> firms flag channel friction; no VAR feed</div><div class="st"><span class="dot r"></span>No VAR feed — gap</div></div>
+      <div class="trow"><div><div class="name">5 · Field sentiment</div><div class="q">Is the transformation landing? Do sellers believe?</div></div><div class="ans"><b>4.08/5</b>; post-sale capacity low; feed stalled at Feb</div><div class="st"><span class="dot y"></span>Heartbeat stalled — watch</div></div>
+    </div>
+    <div class="legend"><span><span class="dot g"></span>Solid / live</span><span><span class="dot y"></span>Partial / stale</span><span><span class="dot r"></span>Gap — data not connected</span></div>
+  </section>
+
+  <!-- CONSTRAINT -->
+  <section>
+    <div class="callout">
+      <h3>The honest constraint: data flow, not dashboard polish</h3>
+      <p>The gaps above (themes 3 &amp; 4) aren't analysis problems — the sources aren't connected. The real ROI is the pipeline: <b>automate the daily Gong feed, stand up Pulse, and capture the ~70% of customer signal in email and text.</b> The themes coverage matrix is the artifact that turns "we need more data" into a specific, fundable ask to leadership.</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
